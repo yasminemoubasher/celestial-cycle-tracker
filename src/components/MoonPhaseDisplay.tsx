@@ -1,0 +1,38 @@
+import { MoonData, formatTime12hr } from "@/lib/moonCalculations";
+
+interface MoonPhaseDisplayProps {
+  moonData: MoonData;
+}
+
+export function MoonPhaseDisplay({ moonData }: MoonPhaseDisplayProps) {
+  return (
+    <div className="flex flex-col items-center p-8">
+      <div className="relative">
+        {/* Moon glow effect */}
+        <div className="absolute inset-0 blur-2xl bg-moon-glow/30 rounded-full scale-150" />
+        
+        {/* Moon emoji */}
+        <div className="relative text-9xl animate-float drop-shadow-2xl">
+          {moonData.phaseEmoji}
+        </div>
+      </div>
+      
+      <h2 className="mt-6 text-3xl font-display font-semibold moon-text-gradient">
+        {moonData.phaseName}
+      </h2>
+      
+      <p className="mt-2 text-muted-foreground font-body">
+        {moonData.illumination.toFixed(1)}% Illumination
+      </p>
+      
+      <div className="mt-4 px-4 py-2 bg-secondary/50 rounded-lg border border-border">
+        <p className="text-sm text-muted-foreground">
+          Next major phase at{" "}
+          <span className="text-star-gold font-medium">
+            {formatTime12hr(moonData.phaseExactTime)}
+          </span>
+        </p>
+      </div>
+    </div>
+  );
+}
