@@ -22,7 +22,7 @@ export function MoonPhaseDisplay({ moonData }: MoonPhaseDisplayProps) {
       </h2>
       
       <p className="mt-2 text-muted-foreground font-body">
-        {moonData.illumination.toFixed(1)}% Illumination
+        {moonData.illumination}% Illumination
       </p>
       
       <div className="mt-4 px-4 py-2 bg-secondary/50 rounded-lg border border-border">
@@ -32,6 +32,22 @@ export function MoonPhaseDisplay({ moonData }: MoonPhaseDisplayProps) {
             {formatTime12hr(moonData.phaseExactTime)}
           </span>
         </p>
+      </div>
+
+      {/* Moon rise/set times */}
+      <div className="mt-4 flex gap-6 text-sm text-muted-foreground">
+        {moonData.moonRise && (
+          <div className="flex items-center gap-2">
+            <span>🌅</span>
+            <span>Rise: <span className="text-star-gold">{formatTime12hr(moonData.moonRise)}</span></span>
+          </div>
+        )}
+        {moonData.moonSet && (
+          <div className="flex items-center gap-2">
+            <span>🌇</span>
+            <span>Set: <span className="text-star-gold">{formatTime12hr(moonData.moonSet)}</span></span>
+          </div>
+        )}
       </div>
     </div>
   );
