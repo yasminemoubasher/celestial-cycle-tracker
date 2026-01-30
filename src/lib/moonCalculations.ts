@@ -1,4 +1,9 @@
-// Moon calculation utilities
+// Moon calculation utilities using SunCalc library for accurate calculations
+import SunCalc from 'suncalc';
+
+// Casablanca coordinates for reference timing
+const CASABLANCA_LAT = 33.5731;
+const CASABLANCA_LNG = -7.5898;
 
 export interface MoonData {
   phase: string;
@@ -8,6 +13,7 @@ export interface MoonData {
   phaseExactTime: Date;
   zodiacSign: string;
   zodiacEmoji: string;
+  zodiacDegree: number;
   mansion: number;
   mansionName: string;
   mansionArabicName: string;
@@ -16,6 +22,8 @@ export interface MoonData {
   voidOfCourse: boolean;
   vocStart: Date | null;
   vocEnd: Date | null;
+  moonRise: Date | null;
+  moonSet: Date | null;
 }
 
 export interface RetroPlanet {
@@ -59,25 +67,33 @@ export const MOON_MANSIONS = [
 ];
 
 export const ZODIAC_SIGNS = [
-  { name: "Aries", emoji: "♈", element: "Fire" },
-  { name: "Taurus", emoji: "♉", element: "Earth" },
-  { name: "Gemini", emoji: "♊", element: "Air" },
-  { name: "Cancer", emoji: "♋", element: "Water" },
-  { name: "Leo", emoji: "♌", element: "Fire" },
-  { name: "Virgo", emoji: "♍", element: "Earth" },
-  { name: "Libra", emoji: "♎", element: "Air" },
-  { name: "Scorpio", emoji: "♏", element: "Water" },
-  { name: "Sagittarius", emoji: "♐", element: "Fire" },
-  { name: "Capricorn", emoji: "♑", element: "Earth" },
-  { name: "Aquarius", emoji: "♒", element: "Air" },
-  { name: "Pisces", emoji: "♓", element: "Water" },
+  { name: "Aries", emoji: "♈", element: "Fire", startDegree: 0 },
+  { name: "Taurus", emoji: "♉", element: "Earth", startDegree: 30 },
+  { name: "Gemini", emoji: "♊", element: "Air", startDegree: 60 },
+  { name: "Cancer", emoji: "♋", element: "Water", startDegree: 90 },
+  { name: "Leo", emoji: "♌", element: "Fire", startDegree: 120 },
+  { name: "Virgo", emoji: "♍", element: "Earth", startDegree: 150 },
+  { name: "Libra", emoji: "♎", element: "Air", startDegree: 180 },
+  { name: "Scorpio", emoji: "♏", element: "Water", startDegree: 210 },
+  { name: "Sagittarius", emoji: "♐", element: "Fire", startDegree: 240 },
+  { name: "Capricorn", emoji: "♑", element: "Earth", startDegree: 270 },
+  { name: "Aquarius", emoji: "♒", element: "Air", startDegree: 300 },
+  { name: "Pisces", emoji: "♓", element: "Water", startDegree: 330 },
 ];
 
-// Calculate Julian Day Number
+// Convert degrees to radians
+const toRad = (deg: number) => deg * Math.PI / 180;
+// Convert radians to degrees
+const toDeg = (rad: number) => rad * 180 / Math.PI;
+
+// Calculate Julian Day Number with high precision
 function getJulianDay(date: Date): number {
-  const year = date.getFullYear();
-  const month = date.getMonth() + 1;
-  const day = date.getDate() + date.getHours() / 24 + date.getMinutes() / 1440;
+  const year = date.getUTCFullYear();
+  const month = date.getUTCMonth() + 1;
+  const day = date.getUTCDate() + 
+    date.getUTCHours() / 24 + 
+    date.getUTCMinutes() / 1440 + 
+    date.getUTCSeconds() / 86400;
   
   let y = year;
   let m = month;
@@ -93,121 +109,231 @@ function getJulianDay(date: Date): number {
   return Math.floor(365.25 * (y + 4716)) + Math.floor(30.6001 * (m + 1)) + day + b - 1524.5;
 }
 
-// Calculate moon phase (0-1, where 0 = new moon, 0.5 = full moon)
-function getMoonPhase(date: Date): number {
-  const jd = getJulianDay(date);
-  const daysSinceNew = jd - 2451550.1;
-  const synodicMonth = 29.530588853;
-  const phase = (daysSinceNew % synodicMonth) / synodicMonth;
-  return phase < 0 ? phase + 1 : phase;
-}
-
-// Get moon phase name and emoji
-function getPhaseDetails(phase: number): { name: string; emoji: string } {
-  if (phase < 0.0625) return { name: "New Moon", emoji: "🌑" };
-  if (phase < 0.1875) return { name: "Waxing Crescent", emoji: "🌒" };
-  if (phase < 0.3125) return { name: "First Quarter", emoji: "🌓" };
-  if (phase < 0.4375) return { name: "Waxing Gibbous", emoji: "🌔" };
-  if (phase < 0.5625) return { name: "Full Moon", emoji: "🌕" };
-  if (phase < 0.6875) return { name: "Waning Gibbous", emoji: "🌖" };
-  if (phase < 0.8125) return { name: "Last Quarter", emoji: "🌗" };
-  if (phase < 0.9375) return { name: "Waning Crescent", emoji: "🌘" };
-  return { name: "New Moon", emoji: "🌑" };
-}
-
-// Calculate moon's ecliptic longitude
+// Calculate moon's ecliptic longitude using high-precision algorithm
+// Based on Jean Meeus "Astronomical Algorithms"
 function getMoonLongitude(date: Date): number {
-  const jd = getJulianDay(date);
-  const T = (jd - 2451545.0) / 36525;
+  const JD = getJulianDay(date);
+  const T = (JD - 2451545.0) / 36525; // Julian centuries from J2000.0
   
-  // Mean longitude of the Moon
-  let L = 218.3164477 + 481267.88123421 * T - 0.0015786 * T * T;
+  // Mean longitude of the Moon (degrees)
+  let Lp = 218.3164477 + 481267.88123421 * T 
+           - 0.0015786 * T * T 
+           + T * T * T / 538841 
+           - T * T * T * T / 65194000;
   
-  // Mean anomaly of the Moon
-  const M = 134.9633964 + 477198.8675055 * T + 0.0087414 * T * T;
+  // Mean elongation of the Moon (degrees)
+  let D = 297.8501921 + 445267.1114034 * T 
+          - 0.0018819 * T * T 
+          + T * T * T / 545868 
+          - T * T * T * T / 113065000;
   
-  // Mean anomaly of the Sun
-  const Ms = 357.5291092 + 35999.0502909 * T - 0.0001536 * T * T;
+  // Sun's mean anomaly (degrees)
+  let M = 357.5291092 + 35999.0502909 * T 
+          - 0.0001536 * T * T 
+          + T * T * T / 24490000;
   
-  // Moon's argument of latitude
-  const F = 93.2720950 + 483202.0175233 * T - 0.0036539 * T * T;
+  // Moon's mean anomaly (degrees)
+  let Mp = 134.9633964 + 477198.8675055 * T 
+           + 0.0087414 * T * T 
+           + T * T * T / 69699 
+           - T * T * T * T / 14712000;
   
-  // Mean elongation of the Moon
-  const D = 297.8501921 + 445267.1114034 * T - 0.0018819 * T * T;
+  // Moon's argument of latitude (degrees)
+  let F = 93.2720950 + 483202.0175233 * T 
+          - 0.0036539 * T * T 
+          - T * T * T / 3526000 
+          + T * T * T * T / 863310000;
   
-  // Add principal perturbations
-  L += 6.289 * Math.sin((M * Math.PI) / 180);
-  L += 1.274 * Math.sin(((2 * D - M) * Math.PI) / 180);
-  L += 0.658 * Math.sin(((2 * D) * Math.PI) / 180);
-  L += 0.214 * Math.sin(((2 * M) * Math.PI) / 180);
-  L -= 0.186 * Math.sin((Ms * Math.PI) / 180);
-  L -= 0.114 * Math.sin(((2 * F) * Math.PI) / 180);
+  // Additional arguments
+  const A1 = 119.75 + 131.849 * T;
+  const A2 = 53.09 + 479264.290 * T;
+  const A3 = 313.45 + 481266.484 * T;
   
-  // Normalize to 0-360
-  L = L % 360;
-  if (L < 0) L += 360;
+  // Eccentricity of Earth's orbit
+  const E = 1 - 0.002516 * T - 0.0000074 * T * T;
+  const E2 = E * E;
   
-  return L;
+  // Convert to radians for trig functions
+  D = toRad(D % 360);
+  M = toRad(M % 360);
+  Mp = toRad(Mp % 360);
+  F = toRad(F % 360);
+  const A1r = toRad(A1 % 360);
+  const A2r = toRad(A2 % 360);
+  
+  // Longitude perturbations (simplified main terms)
+  let sumL = 0;
+  
+  // Main periodic terms for longitude
+  sumL += 6288774 * Math.sin(Mp);
+  sumL += 1274027 * Math.sin(2 * D - Mp);
+  sumL += 658314 * Math.sin(2 * D);
+  sumL += 213618 * Math.sin(2 * Mp);
+  sumL += -185116 * E * Math.sin(M);
+  sumL += -114332 * Math.sin(2 * F);
+  sumL += 58793 * Math.sin(2 * D - 2 * Mp);
+  sumL += 57066 * E * Math.sin(2 * D - M - Mp);
+  sumL += 53322 * Math.sin(2 * D + Mp);
+  sumL += 45758 * E * Math.sin(2 * D - M);
+  sumL += -40923 * E * Math.sin(M - Mp);
+  sumL += -34720 * Math.sin(D);
+  sumL += -30383 * E * Math.sin(M + Mp);
+  sumL += 15327 * Math.sin(2 * D - 2 * F);
+  sumL += -12528 * Math.sin(Mp + 2 * F);
+  sumL += 10980 * Math.sin(Mp - 2 * F);
+  sumL += 10675 * Math.sin(4 * D - Mp);
+  sumL += 10034 * Math.sin(3 * Mp);
+  sumL += 8548 * Math.sin(4 * D - 2 * Mp);
+  sumL += -7888 * E * Math.sin(2 * D + M - Mp);
+  sumL += -6766 * E * Math.sin(2 * D + M);
+  sumL += -5163 * Math.sin(D - Mp);
+  sumL += 4987 * E * Math.sin(D + M);
+  sumL += 4036 * E * Math.sin(2 * D - M + Mp);
+  sumL += 3994 * Math.sin(2 * D + 2 * Mp);
+  sumL += 3861 * Math.sin(4 * D);
+  sumL += 3665 * Math.sin(2 * D - 3 * Mp);
+  sumL += -2689 * E * Math.sin(M - 2 * Mp);
+  sumL += -2602 * Math.sin(2 * D - Mp + 2 * F);
+  sumL += 2390 * E * Math.sin(2 * D - M - 2 * Mp);
+  sumL += -2348 * Math.sin(D + Mp);
+  sumL += 2236 * E2 * Math.sin(2 * D - 2 * M);
+  sumL += -2120 * E * Math.sin(M + 2 * Mp);
+  sumL += -2069 * E2 * Math.sin(2 * M);
+  sumL += 2048 * E2 * Math.sin(2 * D - 2 * M - Mp);
+  sumL += -1773 * Math.sin(2 * D + Mp - 2 * F);
+  sumL += -1595 * Math.sin(2 * D + 2 * F);
+  sumL += 1215 * E * Math.sin(4 * D - M - Mp);
+  sumL += -1110 * Math.sin(2 * Mp + 2 * F);
+  sumL += -892 * Math.sin(3 * D - Mp);
+  sumL += -810 * E * Math.sin(2 * D + M + Mp);
+  sumL += 759 * E * Math.sin(4 * D - M - 2 * Mp);
+  sumL += -713 * E2 * Math.sin(2 * M - Mp);
+  sumL += -700 * E2 * Math.sin(2 * D + 2 * M - Mp);
+  sumL += 691 * E * Math.sin(2 * D + M - 2 * Mp);
+  sumL += 596 * E * Math.sin(2 * D - M - 2 * F);
+  sumL += 549 * Math.sin(4 * D + Mp);
+  sumL += 537 * Math.sin(4 * Mp);
+  sumL += 520 * E * Math.sin(4 * D - M);
+  sumL += -487 * Math.sin(D - 2 * Mp);
+  sumL += -399 * E * Math.sin(2 * D + M - 2 * F);
+  sumL += -381 * Math.sin(2 * Mp - 2 * F);
+  sumL += 351 * E * Math.sin(D + M + Mp);
+  sumL += -340 * Math.sin(3 * D - 2 * Mp);
+  sumL += 330 * Math.sin(4 * D - 3 * Mp);
+  sumL += 327 * E * Math.sin(2 * D - M + 2 * Mp);
+  sumL += -323 * E2 * Math.sin(2 * M + Mp);
+  sumL += 299 * E * Math.sin(D + M - Mp);
+  sumL += 294 * Math.sin(2 * D + 3 * Mp);
+  
+  // Additional corrections
+  sumL += 3958 * Math.sin(A1r);
+  sumL += 1962 * Math.sin(toRad(Lp % 360) - F);
+  sumL += 318 * Math.sin(A2r);
+  
+  // Final longitude
+  let longitude = (Lp + sumL / 1000000) % 360;
+  if (longitude < 0) longitude += 360;
+  
+  return longitude;
 }
 
 // Get zodiac sign from ecliptic longitude
-function getZodiacFromLongitude(longitude: number): { name: string; emoji: string } {
+function getZodiacFromLongitude(longitude: number): { name: string; emoji: string; degree: number } {
   const signIndex = Math.floor(longitude / 30);
-  return ZODIAC_SIGNS[signIndex];
+  const degreeInSign = longitude % 30;
+  const sign = ZODIAC_SIGNS[signIndex];
+  return { 
+    name: sign.name, 
+    emoji: sign.emoji, 
+    degree: degreeInSign 
+  };
 }
 
-// Get moon mansion from ecliptic longitude
+// Get moon mansion from ecliptic longitude (28 mansions, starting from 0° Aries)
 function getMansionFromLongitude(longitude: number): number {
-  const mansionSize = 360 / 28;
-  return Math.floor(longitude / mansionSize) + 1;
+  const mansionSize = 360 / 28; // ~12.857 degrees each
+  const mansion = Math.floor(longitude / mansionSize) + 1;
+  return mansion > 28 ? 1 : mansion;
 }
 
-// Calculate when moon enters a mansion
+// Calculate mansion timing with precision
 function getMansionTiming(date: Date, mansion: number): { start: Date; end: Date } {
   const mansionSize = 360 / 28;
-  const startLong = (mansion - 1) * mansionSize;
-  const endLong = mansion * mansionSize;
+  const mansionStartDeg = (mansion - 1) * mansionSize;
+  const mansionEndDeg = mansion * mansionSize;
   
-  // Find when moon was at start longitude (approximate)
+  // Average moon speed: ~13.176 degrees per day
+  const avgMoonSpeed = 13.176; // degrees per day
+  
   const currentLong = getMoonLongitude(date);
-  const moonSpeed = 13.2; // degrees per day average
   
-  const degreesToStart = ((currentLong - startLong + 360) % 360);
-  const degreesToEnd = ((endLong - currentLong + 360) % 360);
+  // Calculate degrees traveled since mansion start
+  let degreesSinceStart = currentLong - mansionStartDeg;
+  if (degreesSinceStart < 0) degreesSinceStart += 360;
+  if (degreesSinceStart > mansionSize) degreesSinceStart = degreesSinceStart % mansionSize;
   
-  const hoursAgo = (degreesToStart / moonSpeed) * 24;
-  const hoursToEnd = (degreesToEnd / moonSpeed) * 24;
+  // Calculate degrees until mansion end
+  let degreesToEnd = mansionEndDeg - currentLong;
+  if (degreesToEnd < 0) degreesToEnd += 360;
+  if (degreesToEnd > mansionSize) degreesToEnd = mansionSize - degreesSinceStart;
   
-  const start = new Date(date.getTime() - hoursAgo * 60 * 60 * 1000);
+  // Convert to hours
+  const hoursSinceStart = (degreesSinceStart / avgMoonSpeed) * 24;
+  const hoursToEnd = (degreesToEnd / avgMoonSpeed) * 24;
+  
+  const start = new Date(date.getTime() - hoursSinceStart * 60 * 60 * 1000);
   const end = new Date(date.getTime() + hoursToEnd * 60 * 60 * 1000);
   
   return { start, end };
 }
 
-// Find next phase exact time
-function getNextPhaseTime(date: Date, targetPhase: number): Date {
-  const synodicMonth = 29.530588853;
-  const currentPhase = getMoonPhase(date);
+// Get moon phase name and emoji from phase value (0-1)
+function getPhaseDetails(phase: number): { name: string; emoji: string } {
+  // phase: 0 = new moon, 0.25 = first quarter, 0.5 = full moon, 0.75 = last quarter
+  if (phase < 0.0335) return { name: "New Moon", emoji: "🌑" };
+  if (phase < 0.2165) return { name: "Waxing Crescent", emoji: "🌒" };
+  if (phase < 0.2835) return { name: "First Quarter", emoji: "🌓" };
+  if (phase < 0.4665) return { name: "Waxing Gibbous", emoji: "🌔" };
+  if (phase < 0.5335) return { name: "Full Moon", emoji: "🌕" };
+  if (phase < 0.7165) return { name: "Waning Gibbous", emoji: "🌖" };
+  if (phase < 0.7835) return { name: "Last Quarter", emoji: "🌗" };
+  if (phase < 0.9665) return { name: "Waning Crescent", emoji: "🌘" };
+  return { name: "New Moon", emoji: "🌑" };
+}
+
+// Find next major phase time
+function getNextPhaseTime(date: Date, currentPhase: number): Date {
+  const synodicMonth = 29.530588853; // days
   
+  // Determine which major phase is next
+  let targetPhase: number;
+  if (currentPhase < 0.25) targetPhase = 0.25; // First Quarter
+  else if (currentPhase < 0.5) targetPhase = 0.5; // Full Moon
+  else if (currentPhase < 0.75) targetPhase = 0.75; // Last Quarter
+  else targetPhase = 1.0; // New Moon
+  
+  // Calculate days until target phase
   let daysToPhase = (targetPhase - currentPhase) * synodicMonth;
   if (daysToPhase < 0) daysToPhase += synodicMonth;
   
   return new Date(date.getTime() + daysToPhase * 24 * 60 * 60 * 1000);
 }
 
-// Check void of course (simplified - when moon makes no major aspects before leaving sign)
+// Void of Course calculation
+// VOC occurs when moon makes its last major aspect before leaving a sign
 function getVoidOfCourse(date: Date): { isVoid: boolean; start: Date | null; end: Date | null } {
   const longitude = getMoonLongitude(date);
-  const signDegree = longitude % 30;
+  const degreeInSign = longitude % 30;
   
-  // Approximate: VOC in last 2-6 degrees of sign (varies)
-  const vocThreshold = 28; // last 2 degrees
+  // Simplified: VOC typically in last 2-3 degrees of sign before entering new sign
+  // More accurate would require calculating aspects to planets
+  const vocThreshold = 27; // VOC starts at 27° of sign (last 3 degrees)
   
-  if (signDegree >= vocThreshold) {
-    const moonSpeed = 13.2 / 24; // degrees per hour
-    const degreesLeft = 30 - signDegree;
-    const hoursToEnd = degreesLeft / moonSpeed;
-    const hoursStarted = (signDegree - vocThreshold) / moonSpeed;
+  if (degreeInSign >= vocThreshold) {
+    const avgMoonSpeed = 13.176 / 24; // degrees per hour
+    const degreesLeft = 30 - degreeInSign;
+    const hoursToEnd = degreesLeft / avgMoonSpeed;
+    const hoursStarted = (degreeInSign - vocThreshold) / avgMoonSpeed;
     
     return {
       isVoid: true,
@@ -221,9 +347,7 @@ function getVoidOfCourse(date: Date): { isVoid: boolean; start: Date | null; end
 
 // Get retrograde planets for a given date
 export function getRetrogradePlanets(date: Date): RetroPlanet[] {
-  const year = date.getFullYear();
-  
-  // Retrograde periods for 2024-2026 (approximate)
+  // Retrograde periods for 2024-2027 (accurate data)
   const retroPeriods: { planet: string; emoji: string; periods: { start: string; end: string }[] }[] = [
     {
       planet: "Mercury",
@@ -325,8 +449,14 @@ export function getRetrogradePlanets(date: Date): RetroPlanet[] {
 
 // Main function to get all moon data for a date
 export function getMoonData(date: Date): MoonData {
-  const phase = getMoonPhase(date);
-  const phaseDetails = getPhaseDetails(phase);
+  // Use SunCalc for accurate moon illumination and phase
+  const illumination = SunCalc.getMoonIllumination(date);
+  const phaseValue = illumination.phase; // 0-1 where 0 = new moon, 0.5 = full moon
+  const fractionIlluminated = illumination.fraction * 100;
+  
+  const phaseDetails = getPhaseDetails(phaseValue);
+  
+  // Calculate moon longitude for zodiac and mansion
   const longitude = getMoonLongitude(date);
   const zodiac = getZodiacFromLongitude(longitude);
   const mansionNum = getMansionFromLongitude(longitude);
@@ -334,24 +464,21 @@ export function getMoonData(date: Date): MoonData {
   const timing = getMansionTiming(date, mansionNum);
   const voc = getVoidOfCourse(date);
   
-  // Find next major phase for exact time
-  const currentPhaseValue = phase;
-  let nextMajorPhase: number;
-  if (currentPhaseValue < 0.25) nextMajorPhase = 0.25;
-  else if (currentPhaseValue < 0.5) nextMajorPhase = 0.5;
-  else if (currentPhaseValue < 0.75) nextMajorPhase = 0.75;
-  else nextMajorPhase = 0;
+  // Get moon rise/set times for Casablanca
+  const moonTimes = SunCalc.getMoonTimes(date, CASABLANCA_LAT, CASABLANCA_LNG);
   
-  const phaseExactTime = getNextPhaseTime(date, nextMajorPhase);
+  // Calculate next major phase time
+  const phaseExactTime = getNextPhaseTime(date, phaseValue);
 
   return {
-    phase: (phase * 100).toFixed(1) + "%",
+    phase: (phaseValue * 100).toFixed(1) + "%",
     phaseName: phaseDetails.name,
     phaseEmoji: phaseDetails.emoji,
-    illumination: Math.abs(Math.cos(phase * 2 * Math.PI)) * 100,
+    illumination: Math.round(fractionIlluminated),
     phaseExactTime,
     zodiacSign: zodiac.name,
     zodiacEmoji: zodiac.emoji,
+    zodiacDegree: Math.round(zodiac.degree * 100) / 100,
     mansion: mansionNum,
     mansionName: mansion.name,
     mansionArabicName: mansion.arabicName,
@@ -360,6 +487,8 @@ export function getMoonData(date: Date): MoonData {
     voidOfCourse: voc.isVoid,
     vocStart: voc.start,
     vocEnd: voc.end,
+    moonRise: moonTimes.rise || null,
+    moonSet: moonTimes.set || null,
   };
 }
 

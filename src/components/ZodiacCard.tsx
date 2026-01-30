@@ -20,6 +20,10 @@ export function ZodiacCard({ moonData }: ZodiacCardProps) {
         {moonData.zodiacSign}
       </h3>
 
+      <p className="text-lg text-star-gold font-medium mt-1">
+        {moonData.zodiacDegree}° in {moonData.zodiacSign}
+      </p>
+
       <p className="mt-2 text-muted-foreground font-body">
         The Moon is currently transiting through {moonData.zodiacSign}, influencing
         emotions and intuition with{" "}
