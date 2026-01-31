@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { StarBackground } from "@/components/StarBackground";
 import { MoonPhaseDisplay } from "@/components/MoonPhaseDisplay";
@@ -35,6 +37,31 @@ const Index = () => {
     setMoonData(getMoonData(selectedDate));
     setRetroPlanets(getRetrogradePlanets(selectedDate));
   }, [selectedDate]);
+
+  const goToPreviousDay = () => {
+    const newDate = new Date(selectedDate);
+    newDate.setDate(newDate.getDate() - 1);
+    setSelectedDate(newDate);
+  };
+
+  const goToNextDay = () => {
+    const newDate = new Date(selectedDate);
+    newDate.setDate(newDate.getDate() + 1);
+    setSelectedDate(newDate);
+  };
+
+  const goToToday = () => {
+    setSelectedDate(new Date());
+  };
+
+  const isToday = () => {
+    const today = new Date();
+    return (
+      selectedDate.getDate() === today.getDate() &&
+      selectedDate.getMonth() === today.getMonth() &&
+      selectedDate.getFullYear() === today.getFullYear()
+    );
+  };
 
   if (!moonData) return null;
 
@@ -76,6 +103,45 @@ const Index = () => {
 
           {/* Daily View */}
           <TabsContent value="daily" className="space-y-8">
+            {/* Day Navigation */}
+            <div className="flex items-center justify-center gap-4">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={goToPreviousDay}
+                className="hover:bg-secondary/50"
+              >
+                <ChevronLeft className="w-6 h-6" />
+              </Button>
+              
+              <div className="text-center min-w-[200px]">
+                <p className="text-xl font-display font-semibold moon-text-gradient">
+                  {selectedDate.toLocaleDateString("en-US", {
+                    weekday: "long",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                </p>
+                {!isToday() && (
+                  <button
+                    onClick={goToToday}
+                    className="text-sm text-accent hover:underline mt-1"
+                  >
+                    Return to Today
+                  </button>
+                )}
+              </div>
+              
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={goToNextDay}
+                className="hover:bg-secondary/50"
+              >
+                <ChevronRight className="w-6 h-6" />
+              </Button>
+            </div>
+
             {/* Moon Phase Hero */}
             <div className="bg-gradient-card rounded-2xl border border-border shadow-card overflow-hidden">
               <MoonPhaseDisplay moonData={moonData} />

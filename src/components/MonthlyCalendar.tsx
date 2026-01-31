@@ -13,6 +13,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
 } from "@/components/ui/dialog";
 
 interface MonthlyCalendarProps {
@@ -136,9 +137,6 @@ export function MonthlyCalendar({ onDateSelect, selectedDate }: MonthlyCalendarP
               >
                 <span className="text-sm font-medium">{day}</span>
                 <span className="text-lg leading-none">{moonData.phaseEmoji}</span>
-                <span className="text-[10px] text-muted-foreground">
-                  M{moonData.mansion}
-                </span>
               </button>
             );
           })}
@@ -153,10 +151,6 @@ export function MonthlyCalendar({ onDateSelect, selectedDate }: MonthlyCalendarP
           <div className="flex items-center gap-2">
             <div className="w-3 h-3 rounded bg-void-red/30" />
             <span>Void of Course</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <span>M#</span>
-            <span>= Mansion Number</span>
           </div>
         </div>
       </div>
@@ -175,6 +169,9 @@ export function MonthlyCalendar({ onDateSelect, selectedDate }: MonthlyCalendarP
                     year: "numeric",
                   })}
                 </DialogTitle>
+                <DialogDescription className="sr-only">
+                  Moon data and astrological information for the selected date
+                </DialogDescription>
               </DialogHeader>
 
               <div className="space-y-4 mt-4">
@@ -224,6 +221,14 @@ export function MonthlyCalendar({ onDateSelect, selectedDate }: MonthlyCalendarP
                   <div className="mt-3 pt-3 border-t border-border/50">
                     <p className="text-sm text-muted-foreground mb-1">Essence</p>
                     <p className="text-sm">{dialogMansion.essence}</p>
+                  </div>
+                  <div className="mt-3 pt-3 border-t border-border/50">
+                    <p className="text-sm text-accent mb-1">✓ Good For</p>
+                    <p className="text-sm">{dialogMansion.goodFor}</p>
+                  </div>
+                  <div className="mt-3 pt-3 border-t border-border/50">
+                    <p className="text-sm text-destructive mb-1">✗ Bad For</p>
+                    <p className="text-sm">{dialogMansion.badFor}</p>
                   </div>
                 </div>
 
