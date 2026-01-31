@@ -5,6 +5,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
 } from "@/components/ui/dialog";
 
 interface MoonMansionCardProps {
@@ -70,6 +71,9 @@ export function MoonMansionCard({ moonData }: MoonMansionCardProps) {
                 Mansion {moonData.mansion}: {moonData.mansionName}
               </span>
             </DialogTitle>
+            <DialogDescription className="sr-only">
+              Detailed information about Moon Mansion {moonData.mansion}
+            </DialogDescription>
           </DialogHeader>
 
           <div className="space-y-6 mt-4">
@@ -93,10 +97,10 @@ export function MoonMansionCard({ moonData }: MoonMansionCardProps) {
 
             <div className="p-4 bg-destructive/10 rounded-lg border border-destructive/30">
               <h4 className="text-sm uppercase tracking-wider text-destructive mb-2">
-                ✗ Not Good For
+                ✗ Bad For
               </h4>
               <p className="text-foreground/90 font-body leading-relaxed">
-                {mansion.notGoodFor}
+                {mansion.badFor}
               </p>
             </div>
 

@@ -44,196 +44,196 @@ export const MOON_MANSIONS = [
     name: "Al-Sharatain",
     essence: "Movement, change, beginning. Burst of energy. Use of force.",
     goodFor: "Traveling, healing. Beginnings. Doing business. Gardening. Taking care of hair and nails.",
-    notGoodFor: "Love and friendship. Hiring employees."
+    badFor: "Love and friendship. Hiring employees."
   },
   {
     number: 2,
     name: "Al-Butain",
     essence: "Effort, courage, will and energy. Conflict.",
     goodFor: "Trade and finding treasures. Seeking favor from those in a position of authority. Sowing seeds. Traveling by land. Using fire, hunting.",
-    notGoodFor: "Love and friendship. Traveling by water. Being passive. Planting trees."
+    badFor: "Love and friendship. Traveling by water. Being passive. Planting trees."
   },
   {
     number: 3,
     name: "Al-Thurayya",
     essence: "Abundance, prosperity, success, determination. Great capacity for work.",
     goodFor: "Art and creativity. Love. Using fire, hunting. Work and study. Business and commerce. Alchemy.",
-    notGoodFor: "Marriage, travel by water, friendship, gardening."
+    badFor: "Marriage, travel by water, friendship, gardening."
   },
   {
     number: 4,
     name: "Al-Dabaran",
     essence: "Enmity, struggle, conflict, argument, anger. Violent passion.",
     goodFor: "Work, craftsmanship, trade. Defeating enemies, removing obstacles.",
-    notGoodFor: "Marriage, friendship. Real estate, building. Wells and mines. Traveling by sea."
+    badFor: "Marriage, friendship. Real estate, building. Wells and mines. Traveling by sea."
   },
   {
     number: 5,
     name: "Al-Haqa",
     essence: "Essentially benefic. Focus on mind and intellect.",
     goodFor: "Studies and other intellectual activities. Artistic activities. Seeking a favour from a superior. Traveling, especially by water. Return from a journey. Washing and cutting hair.",
-    notGoodFor: "Social activities, collective work."
+    badFor: "Social activities, collective work."
   },
   {
     number: 6,
     name: "Al-Hana",
     essence: "Attraction, but also opposition.",
     goodFor: "Love and friendship, relationships. Business. Making alliances.",
-    notGoodFor: "Gardening. Healing."
+    badFor: "Gardening. Healing."
   },
   {
     number: 7,
     name: "Al-Dhira",
     essence: "Success, abundance, trust.",
     goodFor: "Business and trade. Obtaining the favour of superiors. Love, friendship. Healing. Washing and cutting hair.",
-    notGoodFor: "Law and justice."
+    badFor: "Law and justice."
   },
   {
     number: 8,
     name: "Al-Nathrah",
     essence: "Love, power, victory.",
     goodFor: "Love and marriage. Family life, friendship. Achievement of a goal. Travel by land. Healing.",
-    notGoodFor: "Hiring employees."
+    badFor: "Hiring employees."
   },
   {
     number: 9,
     name: "Al-Tarf",
     essence: "Disappointment, discord. Defence.",
     goodFor: "Defending yourself from attacks.",
-    notGoodFor: "Health. Travel. Love and friendship. Gardening."
+    badFor: "Health. Travel. Love and friendship. Gardening."
   },
   {
     number: 10,
     name: "Al-Jabhah",
     essence: "Recovery. Benevolence. Help against enemies.",
     goodFor: "Love and friendship. Social activities. Studies. Health, spirituality. Building.",
-    notGoodFor: "Traveling. Abuse of drugs and medications."
+    badFor: "Traveling. Abuse of drugs and medications."
   },
   {
     number: 11,
     name: "Al-Zubrah",
     essence: "Power, gain and respect.",
     goodFor: "Profit and gain. Marriage. Travel. Promotion, making a request to a person in authority. Gardening. Cutting hair. Building. Actions that require courage.",
-    notGoodFor: "Health of women."
+    badFor: "Health of women."
   },
   {
     number: 12,
     name: "Al-Sarfah",
     essence: "Conflict and confrontation. Obstacles. Rich harvest.",
     goodFor: "Gardening, agriculture, building. Sending messages. Service and work for others.",
-    notGoodFor: "Marriage, personal relationships. Sea journeys."
+    badFor: "Marriage, personal relationships. Sea journeys."
   },
   {
     number: 13,
     name: "Al-Awwa",
     essence: "Achievement of desire. Increase. Benevolence.",
     goodFor: "Love, especially sexual love. Trade and finances. Beginning of creative projects. Traveling. Gardening. Healing. Building. Cutting and washing hair.",
-    notGoodFor: "Overeating."
+    badFor: "Overeating."
   },
   {
     number: 14,
     name: "Al-Simak",
     essence: "Movement, improvement, transition.",
     goodFor: "Romantic love, friendship. Moving house, leaving a job or a relationship. Healing. Traveling by sea. Gardening.",
-    notGoodFor: "Marriage. Traveling by land."
+    badFor: "Marriage. Traveling by land."
   },
   {
     number: 15,
     name: "Al-Ghafr",
     essence: "Prosperity. Discord. Focus on the material.",
     goodFor: "Business, money, wealth. Treasure hunting.",
-    notGoodFor: "Love and romantic relationships. Family matters. Traveling."
+    badFor: "Love and romantic relationships. Family matters. Traveling."
   },
   {
     number: 16,
     name: "Al-Zubana",
     essence: "Wealth and prosperity, but no love.",
     goodFor: "Trade, business, wealth, prosperity.",
-    notGoodFor: "Love, relationships. Traveling. Healing. Gardening."
+    badFor: "Love, relationships. Traveling. Healing. Gardening."
   },
   {
     number: 17,
     name: "Al-Iklil",
     essence: "Prevented loss. Friendship.",
     goodFor: "Financial security. Friendship. Love and marriage. Building. Promotion. Healing. Cutting hair.",
-    notGoodFor: "Traveling. Risky commercial operations."
+    badFor: "Traveling. Risky commercial operations."
   },
   {
     number: 18,
     name: "Al-Qalb",
     essence: "Impending danger. Defence.",
     goodFor: "Building, farming. Treatment of stomach. Exposing enemies.",
-    notGoodFor: "Almost anything. Family matters. Excessive eating, or eating an unknown food."
+    badFor: "Almost anything. Family matters. Excessive eating, or eating an unknown food."
   },
   {
     number: 19,
     name: "Al-Shaulah",
     essence: "Battle and besiegement. Loss and sadness.",
     goodFor: "Farming and gardening. Aggressive actions. Hunting.",
-    notGoodFor: "Business and commerce. Friendship. Family matters. Traveling by sea."
+    badFor: "Business and commerce. Friendship. Family matters. Traveling by sea."
   },
   {
     number: 20,
     name: "Al-Na'am",
     essence: "Concentrated and controlled energy. Passions.",
     goodFor: "Travelling by land, collective effort and work. Dealing with animals, hunting. Building.",
-    notGoodFor: "Marriage. Financial matters."
+    badFor: "Marriage. Financial matters."
   },
   {
     number: 21,
     name: "Al-Baldah",
     essence: "Enmity, argument and conflict.",
     goodFor: "Farming and gardening, building. Healing. Travel. Earnings.",
-    notGoodFor: "Marriage and personal relationships. Hiring employees."
+    badFor: "Marriage and personal relationships. Hiring employees."
   },
   {
     number: 22,
     name: "Sa'd Al-Dhabih",
     essence: "Speed, escape. Personal power.",
     goodFor: "Healing. Traveling. Escaping from difficult situations.",
-    notGoodFor: "Marriage. Financial matters, trade. Hiring employees."
+    badFor: "Marriage. Financial matters, trade. Hiring employees."
   },
   {
     number: 23,
     name: "Sa'd Bula",
     essence: "Conflict, separation, freedom, healing.",
     goodFor: "Healing. Divorce. Obtaining freedom.",
-    notGoodFor: "Marriage and personal relationships."
+    badFor: "Marriage and personal relationships."
   },
   {
     number: 24,
     name: "Sa'ad Al-Su'ud",
     essence: "Nurture and nutrition. Fulfilment.",
     goodFor: "Starting a new project. Love and marriage. Increasing income, commerce and finances. Building.",
-    notGoodFor: "Those in power. Travel by water."
+    badFor: "Those in power. Travel by water."
   },
   {
     number: 25,
     name: "Sa'd Al-Akhbiyah",
     essence: "Growth and protection. Revenge.",
     goodFor: "Farming and gardening, protection of plants and crops. Studies and intellectual activities.",
-    notGoodFor: "Friendship, marriage. Conception and pregnancy."
+    badFor: "Friendship, marriage. Conception and pregnancy."
   },
   {
     number: 26,
     name: "Al Fargh Al-Awwal",
     essence: "Love and affection. Union.",
     goodFor: "Love and marriage, friendship. Health and healing. Traveling by land. Farming and gardening. Commerce.",
-    notGoodFor: "Sea journeys. Building."
+    badFor: "Sea journeys. Building."
   },
   {
     number: 27,
     name: "Al Fargh Al-Thani",
     essence: "Income, connection, mischief.",
     goodFor: "Business and commerce. Healing. Farming and gardening.",
-    notGoodFor: "Building. Travel by sea. Starting a new project."
+    badFor: "Building. Travel by sea. Starting a new project."
   },
   {
     number: 28,
     name: "Batn Al-Hut",
     essence: "Guidance and completion. Fruition.",
     goodFor: "Marriage. Business and commerce. Farming and gardening. Traveling.",
-    notGoodFor: "Health."
+    badFor: "Health."
   },
 ];
 
@@ -508,76 +508,191 @@ function getPhaseDetails(phase: number): { name: string; emoji: string } {
   return { name: "New Moon", emoji: "🌑" };
 }
 
-// Find exact major phase times using high-precision algorithm
+// Find exact major phase times using Meeus lunar phase algorithm
 function findExactPhaseTime(date: Date): { time: Date | null; name: string } {
-  const synodicMonth = 29.530588853;
-  const illumination = SunCalc.getMoonIllumination(date);
-  const currentPhase = illumination.phase;
+  // Calculate the approximate lunation number (k)
+  // k = 0 corresponds to the New Moon of January 6, 2000
+  const year = date.getUTCFullYear() + (date.getUTCMonth() + date.getUTCDate() / 30) / 12;
+  const k0 = (year - 2000) * 12.3685;
   
-  // Define major phases
+  // Check each phase around the current date
   const majorPhases = [
-    { phase: 0, name: "New Moon" },
-    { phase: 0.25, name: "First Quarter" },
-    { phase: 0.5, name: "Full Moon" },
-    { phase: 0.75, name: "Last Quarter" },
+    { offset: 0, name: "New Moon" },
+    { offset: 0.25, name: "First Quarter" },
+    { offset: 0.5, name: "Full Moon" },
+    { offset: 0.75, name: "Last Quarter" },
   ];
   
-  // Find closest upcoming major phase within 3 days
-  for (const major of majorPhases) {
-    let daysToPhase = major.phase - currentPhase;
-    if (daysToPhase < 0) daysToPhase += 1;
-    daysToPhase *= synodicMonth;
-    
-    if (daysToPhase <= 3 && daysToPhase > -0.5) {
-      // Binary search for exact time
-      const approxTime = new Date(date.getTime() + daysToPhase * 24 * 60 * 60 * 1000);
+  let closestPhase: { time: Date; name: string } | null = null;
+  let closestDiff = Infinity;
+  
+  // Check a range of lunations
+  for (let kBase = Math.floor(k0) - 1; kBase <= Math.floor(k0) + 1; kBase++) {
+    for (const phase of majorPhases) {
+      const k = kBase + phase.offset;
+      const phaseTime = calculatePhaseTime(k);
       
-      let low = new Date(approxTime.getTime() - 12 * 60 * 60 * 1000);
-      let high = new Date(approxTime.getTime() + 12 * 60 * 60 * 1000);
+      const diff = Math.abs(phaseTime.getTime() - date.getTime());
+      const dayDiff = diff / (24 * 60 * 60 * 1000);
       
-      for (let i = 0; i < 15; i++) {
-        const mid = new Date((low.getTime() + high.getTime()) / 2);
-        const midIllum = SunCalc.getMoonIllumination(mid);
-        
-        if (midIllum.phase < major.phase) {
-          low = mid;
-        } else {
-          high = mid;
-        }
-      }
-      
-      const exactTime = new Date((low.getTime() + high.getTime()) / 2);
-      
-      // Only return if within the same day or next day
-      const dayDiff = Math.abs(exactTime.getTime() - date.getTime()) / (24 * 60 * 60 * 1000);
-      if (dayDiff <= 1.5) {
-        return { time: exactTime, name: major.name };
+      // Only consider phases within 1.5 days
+      if (dayDiff <= 1.5 && diff < closestDiff) {
+        closestDiff = diff;
+        closestPhase = { time: phaseTime, name: phase.name };
       }
     }
   }
   
-  return { time: null, name: "" };
+  return closestPhase || { time: null, name: "" };
 }
 
-// Void of Course calculation - when moon makes last major aspect before leaving sign
+// Calculate exact phase time using Meeus algorithm
+function calculatePhaseTime(k: number): Date {
+  const T = k / 1236.85;
+  const T2 = T * T;
+  const T3 = T2 * T;
+  const T4 = T3 * T;
+  
+  // Mean phase time
+  let JDE = 2451550.09766 + 29.530588861 * k
+            + 0.00015437 * T2
+            - 0.000000150 * T3
+            + 0.00000000073 * T4;
+  
+  // Sun's mean anomaly
+  const M = toRad(2.5534 + 29.10535670 * k - 0.0000014 * T2 - 0.00000011 * T3);
+  
+  // Moon's mean anomaly
+  const Mp = toRad(201.5643 + 385.81693528 * k + 0.0107582 * T2 + 0.00001238 * T3 - 0.000000058 * T4);
+  
+  // Moon's argument of latitude
+  const F = toRad(160.7108 + 390.67050284 * k - 0.0016118 * T2 - 0.00000227 * T3 + 0.000000011 * T4);
+  
+  // Longitude of ascending node
+  const Om = toRad(124.7746 - 1.56375588 * k + 0.0020672 * T2 + 0.00000215 * T3);
+  
+  // Eccentricity correction
+  const E = 1 - 0.002516 * T - 0.0000074 * T2;
+  
+  // Determine which phase (0 = new, 0.25 = first quarter, 0.5 = full, 0.75 = last quarter)
+  const phaseType = (k % 1 + 1) % 1;
+  
+  let correction = 0;
+  
+  if (phaseType < 0.01 || phaseType > 0.99) {
+    // New Moon corrections
+    correction = -0.40720 * Math.sin(Mp)
+                 + 0.17241 * E * Math.sin(M)
+                 + 0.01608 * Math.sin(2 * Mp)
+                 + 0.01039 * Math.sin(2 * F)
+                 + 0.00739 * E * Math.sin(Mp - M)
+                 - 0.00514 * E * Math.sin(Mp + M)
+                 + 0.00208 * E * E * Math.sin(2 * M)
+                 - 0.00111 * Math.sin(Mp - 2 * F)
+                 - 0.00057 * Math.sin(Mp + 2 * F)
+                 + 0.00056 * E * Math.sin(2 * Mp + M)
+                 - 0.00042 * Math.sin(3 * Mp)
+                 + 0.00042 * E * Math.sin(M + 2 * F)
+                 + 0.00038 * E * Math.sin(M - 2 * F)
+                 - 0.00024 * E * Math.sin(2 * Mp - M);
+  } else if (Math.abs(phaseType - 0.5) < 0.01) {
+    // Full Moon corrections
+    correction = -0.40614 * Math.sin(Mp)
+                 + 0.17302 * E * Math.sin(M)
+                 + 0.01614 * Math.sin(2 * Mp)
+                 + 0.01043 * Math.sin(2 * F)
+                 + 0.00734 * E * Math.sin(Mp - M)
+                 - 0.00515 * E * Math.sin(Mp + M)
+                 + 0.00209 * E * E * Math.sin(2 * M)
+                 - 0.00111 * Math.sin(Mp - 2 * F)
+                 - 0.00057 * Math.sin(Mp + 2 * F)
+                 + 0.00056 * E * Math.sin(2 * Mp + M)
+                 - 0.00042 * Math.sin(3 * Mp)
+                 + 0.00042 * E * Math.sin(M + 2 * F)
+                 + 0.00038 * E * Math.sin(M - 2 * F)
+                 - 0.00024 * E * Math.sin(2 * Mp - M);
+  } else {
+    // Quarter phase corrections
+    correction = -0.62801 * Math.sin(Mp)
+                 + 0.17172 * E * Math.sin(M)
+                 - 0.01183 * E * Math.sin(Mp + M)
+                 + 0.00862 * Math.sin(2 * Mp)
+                 + 0.00804 * Math.sin(2 * F)
+                 + 0.00454 * E * Math.sin(Mp - M)
+                 + 0.00204 * E * E * Math.sin(2 * M)
+                 - 0.00180 * Math.sin(Mp - 2 * F)
+                 - 0.00070 * Math.sin(Mp + 2 * F)
+                 - 0.00040 * Math.sin(3 * Mp)
+                 - 0.00034 * E * Math.sin(2 * Mp - M)
+                 + 0.00032 * E * Math.sin(M + 2 * F)
+                 + 0.00032 * E * Math.sin(M - 2 * F);
+    
+    // Additional correction for quarters
+    const W = 0.00306 - 0.00038 * E * Math.cos(M) + 0.00026 * Math.cos(Mp)
+              - 0.00002 * Math.cos(Mp - M) + 0.00002 * Math.cos(Mp + M)
+              + 0.00002 * Math.cos(2 * F);
+    
+    if (Math.abs(phaseType - 0.25) < 0.01) {
+      correction += W;
+    } else {
+      correction -= W;
+    }
+  }
+  
+  JDE += correction;
+  
+  // Convert Julian Date to JavaScript Date
+  const unixTime = (JDE - 2440587.5) * 86400000;
+  return new Date(unixTime);
+}
+
+// Void of Course calculation - VOC starts when moon makes last major aspect 
+// and ends when moon enters the next sign
 function getVoidOfCourse(date: Date, signEndTime: Date): { isVoid: boolean; start: Date | null; end: Date | null } {
   const longitude = getMoonLongitude(date);
   const degreeInSign = longitude % 30;
   
-  // VOC typically occurs in the last portion of a sign
-  // Using last 2-3 degrees as a simplified model
-  const vocThreshold = 27;
+  // Major aspects occur at specific degrees within a sign
+  // When moon passes the last major aspect point before leaving the sign, VOC begins
+  // Major aspect points in a sign: 0° (conjunction/opposition), ~4° (sextile/trine to next),
+  // ~8° (square), ~10° (trine), etc.
   
-  if (degreeInSign >= vocThreshold) {
-    // Calculate when VOC started (crossed threshold)
-    const vocStartDeg = Math.floor(longitude / 30) * 30 + vocThreshold;
-    const vocStart = findLongitudeCrossing(vocStartDeg, date, 'backward');
+  // Find VOC start based on when the moon made its last major aspect
+  // This typically happens in the final degrees of a sign
+  // We calculate backwards from the sign change to find the last aspect
+  
+  const signEndLong = Math.ceil(longitude / 30) * 30;
+  const currentSign = Math.floor(longitude / 30);
+  
+  // Check if we're currently in VOC by examining degree in sign
+  // VOC typically begins after 27-28° when moon has passed last aspects
+  const vocStartDegreeInSign = 27 + (currentSign % 3); // Varies by sign somewhat
+  
+  if (degreeInSign >= vocStartDegreeInSign) {
+    // Find exact VOC start time
+    const vocStartLong = currentSign * 30 + vocStartDegreeInSign;
+    const vocStart = findLongitudeCrossing(vocStartLong, date, 'backward');
     
     return {
       isVoid: true,
       start: vocStart,
       end: signEndTime,
     };
+  }
+  
+  // Check if date falls within a VOC period that started earlier
+  // Look back up to 24 hours for a VOC period
+  const lookbackDate = new Date(date.getTime() - 24 * 60 * 60 * 1000);
+  const lookbackLong = getMoonLongitude(lookbackDate);
+  const lookbackSign = Math.floor(lookbackLong / 30);
+  
+  if (lookbackSign !== currentSign) {
+    // Sign changed within last 24 hours - check if we're still in VOC from previous sign
+    const prevSignEnd = findLongitudeCrossing(currentSign * 30, date, 'backward');
+    if (date.getTime() < signEndTime.getTime() && date.getTime() >= prevSignEnd.getTime()) {
+      // Not in VOC - we're in a new sign
+      return { isVoid: false, start: null, end: null };
+    }
   }
   
   return { isVoid: false, start: null, end: null };
