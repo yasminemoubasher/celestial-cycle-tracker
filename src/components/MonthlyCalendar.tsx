@@ -6,6 +6,7 @@ import {
   getMonthCalendarData,
   MOON_MANSIONS,
   formatTime12hr,
+  formatDateShort,
 } from "@/lib/moonCalculations";
 import {
   Dialog,
@@ -29,8 +30,6 @@ export function MonthlyCalendar({ onDateSelect, selectedDate }: MonthlyCalendarP
   const calendarData = getMonthCalendarData(year, month);
 
   const firstDayOfMonth = new Date(year, month, 1).getDay();
-  const daysInMonth = new Date(year, month + 1, 0).getDate();
-
   const monthName = currentMonth.toLocaleDateString("en-US", {
     month: "long",
     year: "numeric",
@@ -164,7 +163,7 @@ export function MonthlyCalendar({ onDateSelect, selectedDate }: MonthlyCalendarP
 
       {/* Day detail dialog */}
       <Dialog open={dialogDate !== null} onOpenChange={() => setDialogDate(null)}>
-        <DialogContent className="bg-popover border-border max-w-md">
+        <DialogContent className="bg-popover border-border max-w-md max-h-[90vh] overflow-y-auto">
           {dialogMoonData && dialogMansion && dialogDate && (
             <>
               <DialogHeader>
@@ -185,19 +184,32 @@ export function MonthlyCalendar({ onDateSelect, selectedDate }: MonthlyCalendarP
                   <div>
                     <p className="font-display text-lg">{dialogMoonData.phaseName}</p>
                     <p className="text-sm text-muted-foreground">
-                      {dialogMoonData.illumination.toFixed(1)}% illumination
+                      {dialogMoonData.illumination}% illumination
                     </p>
+                    {dialogMoonData.phaseExactTime && dialogMoonData.phaseExactName && (
+                      <p className="text-sm text-star-gold mt-1">
+                        {dialogMoonData.phaseExactName}: {formatDateShort(dialogMoonData.phaseExactTime)} {formatTime12hr(dialogMoonData.phaseExactTime)}
+                      </p>
+                    )}
                   </div>
                 </div>
 
                 {/* Zodiac */}
-                <div className="flex items-center gap-4 p-3 bg-secondary/30 rounded-lg">
-                  <span className="text-4xl">{dialogMoonData.zodiacEmoji}</span>
-                  <div>
-                    <p className="font-display text-lg">
-                      Moon in {dialogMoonData.zodiacSign}
-                    </p>
+                <div className="p-3 bg-secondary/30 rounded-lg">
+                  <div className="flex items-center gap-4">
+                    <span className="text-4xl">{dialogMoonData.zodiacEmoji}</span>
+                    <div>
+                      <p className="font-display text-lg">
+                        Moon in {dialogMoonData.zodiacSign}
+                      </p>
+                      <p className="text-sm text-muted-foreground">
+                        {dialogMoonData.zodiacDegree}° in {dialogMoonData.zodiacSign}
+                      </p>
+                    </div>
                   </div>
+                  <p className="text-sm text-star-gold mt-2">
+                    {formatDateShort(dialogMoonData.zodiacStart)} {formatTime12hr(dialogMoonData.zodiacStart)} – {formatDateShort(dialogMoonData.zodiacEnd)} {formatTime12hr(dialogMoonData.zodiacEnd)}
+                  </p>
                 </div>
 
                 {/* Mansion */}
@@ -206,14 +218,13 @@ export function MonthlyCalendar({ onDateSelect, selectedDate }: MonthlyCalendarP
                     Mansion {dialogMoonData.mansion}
                   </p>
                   <p className="font-display text-lg">{dialogMoonData.mansionName}</p>
-                  <p className="text-star-gold font-display" dir="rtl">
-                    {dialogMoonData.mansionArabicName}
+                  <p className="text-sm text-star-gold mt-2">
+                    {formatDateShort(dialogMoonData.mansionStart)} {formatTime12hr(dialogMoonData.mansionStart)} – {formatDateShort(dialogMoonData.mansionEnd)} {formatTime12hr(dialogMoonData.mansionEnd)}
                   </p>
-                  <p className="text-sm text-muted-foreground mt-2">
-                    {formatTime12hr(dialogMoonData.mansionStart)} –{" "}
-                    {formatTime12hr(dialogMoonData.mansionEnd)}
-                  </p>
-                  <p className="text-sm mt-2">{dialogMansion.nature}</p>
+                  <div className="mt-3 pt-3 border-t border-border/50">
+                    <p className="text-sm text-muted-foreground mb-1">Essence</p>
+                    <p className="text-sm">{dialogMansion.essence}</p>
+                  </div>
                 </div>
 
                 {/* Void of Course */}
@@ -222,8 +233,7 @@ export function MonthlyCalendar({ onDateSelect, selectedDate }: MonthlyCalendarP
                     <p className="text-void-red font-medium">Void of Course</p>
                     {dialogMoonData.vocStart && dialogMoonData.vocEnd && (
                       <p className="text-sm text-muted-foreground">
-                        {formatTime12hr(dialogMoonData.vocStart)} –{" "}
-                        {formatTime12hr(dialogMoonData.vocEnd)}
+                        {formatDateShort(dialogMoonData.vocStart)} {formatTime12hr(dialogMoonData.vocStart)} – {formatDateShort(dialogMoonData.vocEnd)} {formatTime12hr(dialogMoonData.vocEnd)}
                       </p>
                     )}
                   </div>

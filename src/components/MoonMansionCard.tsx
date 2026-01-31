@@ -1,11 +1,10 @@
 import { useState } from "react";
-import { MoonData, MOON_MANSIONS, formatTime12hr } from "@/lib/moonCalculations";
+import { MoonData, MOON_MANSIONS, formatTime12hr, formatDateShort } from "@/lib/moonCalculations";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogDescription,
 } from "@/components/ui/dialog";
 
 interface MoonMansionCardProps {
@@ -30,12 +29,11 @@ export function MoonMansionCard({ moonData }: MoonMansionCardProps) {
         </div>
 
         <div className="space-y-2">
-          <h3 className="text-2xl font-display font-semibold text-foreground group-hover:moon-text-gradient transition-all">
+          <h3 
+            className="text-2xl font-display font-semibold text-foreground group-hover:moon-text-gradient transition-all cursor-pointer underline decoration-accent/30 hover:decoration-accent"
+          >
             {moonData.mansion}. {moonData.mansionName}
           </h3>
-          <p className="text-xl font-display text-star-gold" dir="rtl">
-            {moonData.mansionArabicName}
-          </p>
         </div>
 
         <div className="mt-4 pt-4 border-t border-border/50">
@@ -54,8 +52,8 @@ export function MoonMansionCard({ moonData }: MoonMansionCardProps) {
               />
             </svg>
             <span>
-              {formatTime12hr(moonData.mansionStart)} -{" "}
-              {formatTime12hr(moonData.mansionEnd)}
+              {formatDateShort(moonData.mansionStart)} {formatTime12hr(moonData.mansionStart)} –{" "}
+              {formatDateShort(moonData.mansionEnd)} {formatTime12hr(moonData.mansionEnd)}
             </span>
           </div>
         </div>
@@ -64,7 +62,7 @@ export function MoonMansionCard({ moonData }: MoonMansionCardProps) {
       </div>
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="bg-popover border-border max-w-lg">
+        <DialogContent className="bg-popover border-border max-w-lg max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="text-2xl font-display flex items-center gap-3">
               <span className="text-3xl">🌙</span>
@@ -72,39 +70,34 @@ export function MoonMansionCard({ moonData }: MoonMansionCardProps) {
                 Mansion {moonData.mansion}: {moonData.mansionName}
               </span>
             </DialogTitle>
-            <DialogDescription className="text-xl font-display text-star-gold pt-2" dir="rtl">
-              {moonData.mansionArabicName}
-            </DialogDescription>
           </DialogHeader>
 
           <div className="space-y-6 mt-4">
-            <div>
+            <div className="p-4 bg-secondary/30 rounded-lg">
               <h4 className="text-sm uppercase tracking-wider text-muted-foreground mb-2">
-                Meaning
+                Essence
               </h4>
               <p className="text-foreground font-body text-lg">
-                "{mansion.meaning}"
+                {mansion.essence}
               </p>
             </div>
 
-            <div>
-              <h4 className="text-sm uppercase tracking-wider text-muted-foreground mb-2">
-                Nature & Guidance
+            <div className="p-4 bg-accent/10 rounded-lg border border-accent/30">
+              <h4 className="text-sm uppercase tracking-wider text-accent mb-2">
+                ✓ Good For
               </h4>
               <p className="text-foreground/90 font-body leading-relaxed">
-                {mansion.nature}
+                {mansion.goodFor}
               </p>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              <div className="p-3 bg-secondary/50 rounded-lg">
-                <p className="text-xs text-muted-foreground uppercase">Element</p>
-                <p className="text-lg font-display text-foreground">{mansion.element}</p>
-              </div>
-              <div className="p-3 bg-secondary/50 rounded-lg">
-                <p className="text-xs text-muted-foreground uppercase">Ruling Planet</p>
-                <p className="text-lg font-display text-foreground">{mansion.ruling}</p>
-              </div>
+            <div className="p-4 bg-destructive/10 rounded-lg border border-destructive/30">
+              <h4 className="text-sm uppercase tracking-wider text-destructive mb-2">
+                ✗ Not Good For
+              </h4>
+              <p className="text-foreground/90 font-body leading-relaxed">
+                {mansion.notGoodFor}
+              </p>
             </div>
 
             <div className="p-4 bg-muted/50 rounded-lg border border-border">
@@ -114,11 +107,11 @@ export function MoonMansionCard({ moonData }: MoonMansionCardProps) {
               <p className="text-foreground font-body">
                 From{" "}
                 <span className="text-star-gold font-medium">
-                  {formatTime12hr(moonData.mansionStart)}
+                  {formatDateShort(moonData.mansionStart)} {formatTime12hr(moonData.mansionStart)}
                 </span>{" "}
                 to{" "}
                 <span className="text-star-gold font-medium">
-                  {formatTime12hr(moonData.mansionEnd)}
+                  {formatDateShort(moonData.mansionEnd)} {formatTime12hr(moonData.mansionEnd)}
                 </span>
               </p>
             </div>
