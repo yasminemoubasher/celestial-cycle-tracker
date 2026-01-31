@@ -1,4 +1,4 @@
-import { MoonData, formatTime12hr } from "@/lib/moonCalculations";
+import { MoonData, formatTime12hr, formatDateShort } from "@/lib/moonCalculations";
 
 interface VoidOfCourseCardProps {
   moonData: MoonData;
@@ -36,13 +36,13 @@ export function VoidOfCourseCard({ moonData }: VoidOfCourseCardProps) {
           </p>
           {moonData.vocStart && moonData.vocEnd && (
             <div className="p-3 bg-muted/30 rounded-lg">
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-foreground">
                 <span className="text-void-red font-medium">
-                  {formatTime12hr(moonData.vocStart)}
+                  {formatDateShort(moonData.vocStart)} {formatTime12hr(moonData.vocStart)}
                 </span>{" "}
                 –{" "}
                 <span className="text-void-red font-medium">
-                  {formatTime12hr(moonData.vocEnd)}
+                  {formatDateShort(moonData.vocEnd)} {formatTime12hr(moonData.vocEnd)}
                 </span>
               </p>
             </div>

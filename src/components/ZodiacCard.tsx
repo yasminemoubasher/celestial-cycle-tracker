@@ -1,4 +1,4 @@
-import { MoonData } from "@/lib/moonCalculations";
+import { MoonData, formatTime12hr, formatDateShort } from "@/lib/moonCalculations";
 
 interface ZodiacCardProps {
   moonData: MoonData;
@@ -24,9 +24,37 @@ export function ZodiacCard({ moonData }: ZodiacCardProps) {
         {moonData.zodiacDegree}° in {moonData.zodiacSign}
       </p>
 
-      <p className="mt-2 text-muted-foreground font-body">
-        The Moon is currently transiting through {moonData.zodiacSign}, influencing
-        emotions and intuition with{" "}
+      <div className="mt-4 pt-4 border-t border-border/50">
+        <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
+          <svg
+            className="w-4 h-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+          <span>Sign Timing</span>
+        </div>
+        <p className="text-sm text-foreground">
+          <span className="text-star-gold font-medium">
+            {formatDateShort(moonData.zodiacStart)} {formatTime12hr(moonData.zodiacStart)}
+          </span>{" "}
+          –{" "}
+          <span className="text-star-gold font-medium">
+            {formatDateShort(moonData.zodiacEnd)} {formatTime12hr(moonData.zodiacEnd)}
+          </span>
+        </p>
+      </div>
+
+      <p className="mt-3 text-muted-foreground font-body text-sm">
+        The Moon is transiting through {moonData.zodiacSign}, influencing
+        emotions with{" "}
         {moonData.zodiacSign === "Aries" ||
         moonData.zodiacSign === "Leo" ||
         moonData.zodiacSign === "Sagittarius"
