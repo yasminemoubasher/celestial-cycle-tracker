@@ -1,0 +1,798 @@
+/* CSS Variables */
+:root {
+  --background: 222 47% 6%;
+  --foreground: 210 40% 98%;
+  --card: 222 47% 8%;
+  --card-foreground: 210 40% 98%;
+  --muted: 217 33% 17%;
+  --muted-foreground: 215 20% 65%;
+  --accent: 217 91% 60%;
+  --border: 217 33% 17%;
+  --moon-silver: 210 20% 80%;
+  --star-gold: 45 93% 58%;
+  --cosmic-purple: 271 91% 65%;
+  --void-red: 0 84% 60%;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Cormorant Garamond', serif;
+  background: linear-gradient(135deg, hsl(222, 47%, 6%) 0%, hsl(240, 30%, 8%) 50%, hsl(270, 30%, 10%) 100%);
+  color: hsl(var(--foreground));
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Star Background */
+#star-background {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.star {
+  position: absolute;
+  border-radius: 50%;
+  background: white;
+  animation: twinkle 3s ease-in-out infinite, drift 40s ease-in-out infinite alternate;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+@keyframes drift {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(var(--move-x, 10px), var(--move-y, 5px)); }
+}
+
+.shooting-star {
+  position: absolute;
+  width: 100px;
+  height: 2px;
+  background: linear-gradient(90deg, white, transparent);
+  animation: shoot 8s linear infinite;
+  opacity: 0;
+  transform: rotate(-45deg);
+}
+
+@keyframes shoot {
+  0% { left: 100%; opacity: 0; }
+  2% { opacity: 1; }
+  10% { left: -10%; opacity: 0; }
+  100% { left: -10%; opacity: 0; }
+}
+
+/* Container */
+.container {
+  position: relative;
+  z-index: 10;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+/* Header */
+.header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.title {
+  font-family: 'Cinzel', serif;
+  font-size: 3.5rem;
+  font-weight: 600;
+  background: linear-gradient(135deg, hsl(var(--moon-silver)), hsl(var(--star-gold)), hsl(var(--cosmic-purple)));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  font-size: 1.25rem;
+  color: hsl(var(--muted-foreground));
+}
+
+.current-time {
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  font-size: 0.875rem;
+  color: hsl(var(--muted-foreground));
+}
+
+.time-gold {
+  color: hsl(var(--star-gold));
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  background: hsl(var(--muted) / 0.5);
+  padding: 0.25rem;
+  border-radius: 0.5rem;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 0.75rem 1.5rem;
+  font-family: 'Cinzel', serif;
+  font-size: 1rem;
+  background: transparent;
+  border: none;
+  color: hsl(var(--muted-foreground));
+  cursor: pointer;
+  border-radius: 0.375rem;
+  transition: all 0.2s;
+}
+
+.tab-btn.active {
+  background: hsl(var(--muted));
+  color: hsl(var(--foreground));
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+/* Day Navigation */
+.day-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.nav-btn {
+  background: transparent;
+  border: none;
+  color: hsl(var(--foreground));
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  transition: background 0.2s;
+}
+
+.nav-btn:hover {
+  background: hsl(var(--muted) / 0.5);
+}
+
+.day-info {
+  text-align: center;
+  min-width: 200px;
+}
+
+.selected-date {
+  font-family: 'Cinzel', serif;
+  font-size: 1.25rem;
+  font-weight: 600;
+  background: linear-gradient(135deg, hsl(var(--moon-silver)), hsl(var(--star-gold)));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.return-today {
+  background: transparent;
+  border: none;
+  color: hsl(var(--accent));
+  cursor: pointer;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+.return-today:hover {
+  text-decoration: underline;
+}
+
+/* Cards */
+.card {
+  background: linear-gradient(135deg, hsl(var(--card)) 0%, hsl(222, 47%, 10%) 100%);
+  border: 1px solid hsl(var(--border));
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: hsl(var(--muted-foreground));
+}
+
+/* Moon Hero */
+.moon-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  padding: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .moon-hero {
+    flex-direction: row;
+    padding: 3rem;
+  }
+}
+
+.moon-visual {
+  position: relative;
+}
+
+.moon-glow {
+  position: absolute;
+  inset: -50%;
+  background: radial-gradient(circle, hsl(var(--moon-silver) / 0.3), transparent);
+  filter: blur(40px);
+  border-radius: 50%;
+}
+
+.phase-emoji {
+  font-size: 8rem;
+  position: relative;
+  animation: float 6s ease-in-out infinite;
+  filter: drop-shadow(0 0 20px hsl(var(--moon-silver) / 0.5));
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.illumination-badge {
+  position: absolute;
+  bottom: -0.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: hsl(var(--muted) / 0.8);
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.phase-info {
+  flex: 1;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .phase-info {
+    text-align: left;
+  }
+}
+
+.phase-name {
+  font-family: 'Cinzel', serif;
+  font-size: 2.5rem;
+  font-weight: 600;
+  background: linear-gradient(135deg, hsl(var(--moon-silver)), hsl(var(--star-gold)));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.exact-phase-box {
+  background: hsl(var(--accent) / 0.1);
+  border: 1px solid hsl(var(--accent) / 0.3);
+  border-radius: 0.5rem;
+  padding: 1rem;
+}
+
+.exact-time {
+  font-family: 'Cinzel', serif;
+  font-size: 1.25rem;
+  color: hsl(var(--star-gold));
+}
+
+.rise-set-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.rise-set-item {
+  background: hsl(var(--muted) / 0.3);
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+}
+
+.rise-set-time {
+  font-family: 'Cinzel', serif;
+  font-size: 1.125rem;
+  margin-top: 0.25rem;
+}
+
+/* Info Grid */
+.info-grid {
+  display: grid;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .info-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Mansion Card */
+.mansion-number {
+  font-family: 'Cinzel', serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: hsl(var(--cosmic-purple));
+}
+
+.mansion-name {
+  font-family: 'Cinzel', serif;
+  font-size: 1.75rem;
+  font-weight: 600;
+  background: linear-gradient(135deg, hsl(var(--moon-silver)), hsl(var(--star-gold)));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 1rem;
+}
+
+.mansion-name.clickable {
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.mansion-name.clickable:hover {
+  opacity: 0.8;
+}
+
+.mansion-timing {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: hsl(var(--muted-foreground));
+  font-size: 0.875rem;
+  margin-bottom: 0.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid hsl(var(--border) / 0.5);
+}
+
+.timing-text {
+  font-size: 0.875rem;
+  color: hsl(var(--star-gold));
+}
+
+/* Zodiac Card */
+.zodiac-emoji {
+  font-size: 2rem;
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { filter: drop-shadow(0 0 5px hsl(var(--cosmic-purple) / 0.5)); }
+  50% { filter: drop-shadow(0 0 15px hsl(var(--cosmic-purple) / 0.8)); }
+}
+
+.zodiac-sign {
+  font-family: 'Cinzel', serif;
+  font-size: 1.75rem;
+  font-weight: 600;
+  background: linear-gradient(135deg, hsl(var(--moon-silver)), hsl(var(--star-gold)));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.zodiac-degree {
+  font-size: 1.125rem;
+  color: hsl(var(--star-gold));
+  margin-top: 0.25rem;
+  margin-bottom: 1rem;
+}
+
+.zodiac-timing {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: hsl(var(--muted-foreground));
+  font-size: 0.875rem;
+  margin-bottom: 0.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid hsl(var(--border) / 0.5);
+}
+
+.zodiac-desc {
+  font-size: 0.875rem;
+  color: hsl(var(--muted-foreground));
+  margin-top: 0.75rem;
+}
+
+/* VOC Card */
+.voc-card.active {
+  background: linear-gradient(135deg, hsl(var(--void-red) / 0.1) 0%, hsl(var(--card)) 100%);
+  border-color: hsl(var(--void-red) / 0.3);
+}
+
+.voc-status {
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.voc-status.active {
+  background: hsl(var(--void-red) / 0.2);
+  color: hsl(var(--void-red));
+}
+
+.voc-status.inactive {
+  background: hsl(120, 50%, 40% / 0.2);
+  color: hsl(120, 50%, 60%);
+}
+
+.voc-text {
+  color: hsl(var(--muted-foreground));
+  line-height: 1.6;
+}
+
+.voc-timing {
+  background: hsl(var(--muted) / 0.3);
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.voc-timing p {
+  font-size: 0.875rem;
+  color: hsl(var(--void-red));
+}
+
+/* Retro Card */
+.retro-symbol {
+  font-size: 1.5rem;
+}
+
+.retro-planet {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem;
+  background: hsl(var(--cosmic-purple) / 0.2);
+  border: 1px solid hsl(var(--cosmic-purple) / 0.3);
+  border-radius: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.retro-planet-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.retro-planet-emoji {
+  font-size: 1.5rem;
+}
+
+.retro-planet-name {
+  font-family: 'Cinzel', serif;
+  font-weight: 500;
+}
+
+.retro-planet-label {
+  font-size: 0.75rem;
+  color: hsl(var(--muted-foreground));
+}
+
+.retro-planet-dates {
+  font-size: 0.875rem;
+  color: hsl(var(--cosmic-purple));
+}
+
+.no-retro {
+  color: hsl(var(--muted-foreground));
+}
+
+/* Summary Card */
+.summary-card {
+  margin-top: 1.5rem;
+}
+
+.summary-title {
+  font-family: 'Cinzel', serif;
+  font-size: 1.25rem;
+  font-weight: 600;
+  background: linear-gradient(135deg, hsl(var(--moon-silver)), hsl(var(--star-gold)));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 1rem;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .summary-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.summary-item {
+  text-align: center;
+  padding: 1rem;
+  background: hsl(var(--muted) / 0.3);
+  border-radius: 0.5rem;
+}
+
+.summary-emoji {
+  font-size: 2rem;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.summary-label {
+  font-size: 0.875rem;
+  color: hsl(var(--muted-foreground));
+}
+
+/* Monthly Calendar */
+.month-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.month-title {
+  font-family: 'Cinzel', serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  background: linear-gradient(135deg, hsl(var(--moon-silver)), hsl(var(--star-gold)));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  min-width: 200px;
+  text-align: center;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.5rem;
+}
+
+.weekday {
+  text-align: center;
+  padding: 0.75rem;
+  font-size: 0.875rem;
+  color: hsl(var(--muted-foreground));
+  font-weight: 500;
+}
+
+#calendar-days {
+  display: contents;
+}
+
+.calendar-day {
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  padding: 0.25rem;
+}
+
+.calendar-day:hover {
+  background: hsl(var(--muted));
+  transform: scale(1.05);
+}
+
+.calendar-day.today {
+  border-color: hsl(var(--accent));
+  box-shadow: 0 0 10px hsl(var(--accent) / 0.3);
+}
+
+.calendar-day.selected {
+  background: hsl(var(--accent) / 0.2);
+  border-color: hsl(var(--accent));
+}
+
+.calendar-day.other-month {
+  opacity: 0.3;
+}
+
+.calendar-day.voc-day {
+  background: hsl(var(--void-red) / 0.1);
+}
+
+.day-number {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.day-phase {
+  font-size: 1.25rem;
+  margin-top: 0.25rem;
+}
+
+/* Footer */
+.footer {
+  margin-top: 4rem;
+  text-align: center;
+  color: hsl(var(--muted-foreground));
+  font-size: 0.875rem;
+}
+
+.footer-sub {
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+}
+
+/* Dialog */
+.dialog-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 1rem;
+}
+
+.dialog {
+  background: linear-gradient(135deg, hsl(var(--card)) 0%, hsl(222, 47%, 12%) 100%);
+  border: 1px solid hsl(var(--border));
+  border-radius: 1rem;
+  padding: 2rem;
+  max-width: 500px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+.dialog-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: transparent;
+  border: none;
+  color: hsl(var(--muted-foreground));
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  line-height: 1;
+}
+
+.dialog-close:hover {
+  color: hsl(var(--foreground));
+}
+
+.dialog-title {
+  font-family: 'Cinzel', serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  background: linear-gradient(135deg, hsl(var(--moon-silver)), hsl(var(--star-gold)));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 1.5rem;
+  padding-right: 2rem;
+}
+
+.dialog-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.dialog-section {
+  padding: 1rem;
+  background: hsl(var(--muted) / 0.3);
+  border-radius: 0.5rem;
+}
+
+.dialog-section h4 {
+  font-family: 'Cinzel', serif;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: hsl(var(--muted-foreground));
+  margin-bottom: 0.5rem;
+}
+
+.dialog-section p {
+  color: hsl(var(--foreground));
+  line-height: 1.6;
+}
+
+.dialog-section.good {
+  background: hsl(120, 50%, 40% / 0.1);
+  border: 1px solid hsl(120, 50%, 40% / 0.3);
+}
+
+.dialog-section.good h4 {
+  color: hsl(120, 50%, 60%);
+}
+
+.dialog-section.bad {
+  background: hsl(var(--void-red) / 0.1);
+  border: 1px solid hsl(var(--void-red) / 0.3);
+}
+
+.dialog-section.bad h4 {
+  color: hsl(var(--void-red));
+}
+
+.day-dialog-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  background: hsl(var(--muted) / 0.3);
+  border-radius: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.day-dialog-info span:first-child {
+  font-size: 1.5rem;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .title {
+    font-size: 2.5rem;
+  }
+  
+  .phase-emoji {
+    font-size: 6rem;
+  }
+  
+  .phase-name {
+    font-size: 1.75rem;
+  }
+}
