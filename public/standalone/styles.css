@@ -116,6 +116,21 @@ body {
   color: hsl(var(--star-gold));
 }
 
+.location-info {
+  margin-top: 0.5rem;
+  display: flex;
+  justify-content: center;
+}
+
+.location-display {
+  font-size: 0.875rem;
+  color: hsl(var(--cosmic-purple));
+  padding: 0.25rem 0.75rem;
+  background: hsl(var(--cosmic-purple) / 0.1);
+  border: 1px solid hsl(var(--cosmic-purple) / 0.3);
+  border-radius: 1rem;
+}
+
 /* Tabs */
 .tabs {
   display: flex;
