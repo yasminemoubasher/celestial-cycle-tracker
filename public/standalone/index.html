@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Luna Astrology - Moon Mansions & Phases</title>
+  <meta name="description" content="Track moon mansions, phases, zodiac positions, and void of course periods with accurate astrological calculations.">
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div id="star-background"></div>
+  
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <h1 class="title">Luna Astrology</h1>
+      <p class="subtitle">Moon Mansions • Phases • Void of Course • Retrogrades</p>
+      <div class="current-time">
+        <span id="current-date"></span>
+        <span id="current-time" class="time-gold"></span>
+      </div>
+    </header>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="daily">Daily View</button>
+      <button class="tab-btn" data-tab="monthly">Monthly Calendar</button>
+    </div>
+
+    <!-- Daily View -->
+    <div id="daily-view" class="tab-content active">
+      <!-- Day Navigation -->
+      <div class="day-nav">
+        <button class="nav-btn" id="prev-day">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M15 18l-6-6 6-6"/>
+          </svg>
+        </button>
+        <div class="day-info">
+          <p id="selected-date" class="selected-date"></p>
+          <button id="return-today" class="return-today" style="display: none;">Return to Today</button>
+        </div>
+        <button class="nav-btn" id="next-day">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 18l6-6-6-6"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Moon Phase Hero -->
+      <div class="moon-hero card">
+        <div class="moon-visual">
+          <div class="moon-glow"></div>
+          <div id="phase-emoji" class="phase-emoji"></div>
+          <div class="illumination-badge">
+            <span id="illumination"></span>
+          </div>
+        </div>
+        <div class="phase-info">
+          <div>
+            <p class="label">Current Phase</p>
+            <h2 id="phase-name" class="phase-name"></h2>
+          </div>
+          <div id="exact-phase-box" class="exact-phase-box" style="display: none;">
+            <p class="label" id="exact-phase-label"></p>
+            <p id="exact-phase-time" class="exact-time"></p>
+          </div>
+          <div class="rise-set-grid">
+            <div class="rise-set-item">
+              <p class="label">Moon Rise</p>
+              <p id="moon-rise" class="rise-set-time"></p>
+            </div>
+            <div class="rise-set-item">
+              <p class="label">Moon Set</p>
+              <p id="moon-set" class="rise-set-time"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Info Grid -->
+      <div class="info-grid">
+        <!-- Moon Mansion Card -->
+        <div class="card mansion-card">
+          <div class="card-header">
+            <span class="label">Moon Mansion</span>
+            <span id="mansion-number" class="mansion-number"></span>
+          </div>
+          <h3 id="mansion-name" class="mansion-name clickable"></h3>
+          <div class="mansion-timing">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M12 6v6l4 2"/>
+            </svg>
+            <span>Mansion Timing</span>
+          </div>
+          <p id="mansion-timing" class="timing-text"></p>
+        </div>
+
+        <!-- Zodiac Card -->
+        <div class="card zodiac-card">
+          <div class="card-header">
+            <span class="label">Moon in Zodiac</span>
+            <span id="zodiac-emoji" class="zodiac-emoji"></span>
+          </div>
+          <h3 id="zodiac-sign" class="zodiac-sign"></h3>
+          <p id="zodiac-degree" class="zodiac-degree"></p>
+          <div class="zodiac-timing">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M12 6v6l4 2"/>
+            </svg>
+            <span>Sign Timing</span>
+          </div>
+          <p id="zodiac-timing" class="timing-text"></p>
+          <p id="zodiac-desc" class="zodiac-desc"></p>
+        </div>
+      </div>
+
+      <div class="info-grid">
+        <!-- Void of Course Card -->
+        <div id="voc-card" class="card voc-card">
+          <div class="card-header">
+            <span class="label">Void of Course</span>
+            <span id="voc-status" class="voc-status"></span>
+          </div>
+          <p id="voc-text" class="voc-text"></p>
+          <div id="voc-timing" class="voc-timing" style="display: none;">
+            <p id="voc-times"></p>
+          </div>
+        </div>
+
+        <!-- Retrograde Planets Card -->
+        <div class="card retro-card">
+          <div class="card-header">
+            <span class="label">Retrograde Planets</span>
+            <span class="retro-symbol">℞</span>
+          </div>
+          <div id="retro-planets"></div>
+        </div>
+      </div>
+
+      <!-- Quick Reference -->
+      <div class="card summary-card">
+        <h3 class="summary-title">Today's Summary</h3>
+        <div class="summary-grid">
+          <div class="summary-item">
+            <span id="summary-phase" class="summary-emoji"></span>
+            <p id="summary-phase-name" class="summary-label"></p>
+          </div>
+          <div class="summary-item">
+            <span id="summary-zodiac" class="summary-emoji"></span>
+            <p id="summary-zodiac-name" class="summary-label"></p>
+          </div>
+          <div class="summary-item">
+            <span class="summary-emoji">🏛️</span>
+            <p id="summary-mansion" class="summary-label"></p>
+          </div>
+          <div class="summary-item">
+            <span id="summary-voc-emoji" class="summary-emoji"></span>
+            <p id="summary-voc" class="summary-label"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Monthly View -->
+    <div id="monthly-view" class="tab-content">
+      <div class="month-nav">
+        <button class="nav-btn" id="prev-month">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M15 18l-6-6 6-6"/>
+          </svg>
+        </button>
+        <h2 id="month-title" class="month-title"></h2>
+        <button class="nav-btn" id="next-month">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 18l6-6-6-6"/>
+          </svg>
+        </button>
+      </div>
+      <div class="calendar-grid">
+        <div class="weekday">Sun</div>
+        <div class="weekday">Mon</div>
+        <div class="weekday">Tue</div>
+        <div class="weekday">Wed</div>
+        <div class="weekday">Thu</div>
+        <div class="weekday">Fri</div>
+        <div class="weekday">Sat</div>
+        <div id="calendar-days"></div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>✦ All times displayed in 12-hour format with AM/PM ✦</p>
+      <p class="footer-sub">Click on any moon mansion for detailed meanings and guidance</p>
+    </footer>
+  </div>
+
+  <!-- Mansion Dialog -->
+  <div id="mansion-dialog" class="dialog-overlay" style="display: none;">
+    <div class="dialog">
+      <button class="dialog-close" id="close-mansion-dialog">×</button>
+      <h2 id="dialog-mansion-name" class="dialog-title"></h2>
+      <div class="dialog-content">
+        <div class="dialog-section">
+          <h4>Essence</h4>
+          <p id="dialog-essence"></p>
+        </div>
+        <div class="dialog-section good">
+          <h4>Good For</h4>
+          <p id="dialog-good"></p>
+        </div>
+        <div class="dialog-section bad">
+          <h4>Bad For</h4>
+          <p id="dialog-bad"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Day Dialog -->
+  <div id="day-dialog" class="dialog-overlay" style="display: none;">
+    <div class="dialog">
+      <button class="dialog-close" id="close-day-dialog">×</button>
+      <h2 id="day-dialog-title" class="dialog-title"></h2>
+      <div class="dialog-content">
+        <div id="day-dialog-phase" class="day-dialog-info"></div>
+        <div id="day-dialog-zodiac" class="day-dialog-info"></div>
+        <div id="day-dialog-mansion" class="day-dialog-info"></div>
+        <div class="dialog-section">
+          <h4>Essence</h4>
+          <p id="day-dialog-essence"></p>
+        </div>
+        <div class="dialog-section good">
+          <h4>Good For</h4>
+          <p id="day-dialog-good"></p>
+        </div>
+        <div class="dialog-section bad">
+          <h4>Bad For</h4>
+          <p id="day-dialog-bad"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
