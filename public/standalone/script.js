@@ -69,13 +69,75 @@ const RETROGRADE_PLANETS = [
   { planet: "Pluto", emoji: "♇", retroStart: new Date(2025, 4, 4), retroEnd: new Date(2025, 9, 13) }
 ];
 
-// Casablanca coordinates
-const LAT = 33.5731;
-const LON = -7.5898;
+// Default coordinates (Casablanca) - will be updated with device location
+let LAT = 33.5731;
+let LON = -7.5898;
+let locationName = "Casablanca, Morocco";
+let locationLoaded = false;
 
 // State
 let selectedDate = new Date();
 let currentMonth = new Date();
+
+// Geolocation
+function initGeolocation() {
+  if ("geolocation" in navigator) {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        LAT = position.coords.latitude;
+        LON = position.coords.longitude;
+        locationLoaded = true;
+        
+        // Try to get location name using reverse geocoding
+        reverseGeocode(LAT, LON);
+        
+        // Update the display with new location data
+        updateDailyView();
+        updateMonthlyCalendar();
+        updateLocationDisplay();
+      },
+      (error) => {
+        console.log("Geolocation error:", error.message);
+        locationLoaded = true;
+        updateLocationDisplay();
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 300000 // Cache for 5 minutes
+      }
+    );
+  } else {
+    locationLoaded = true;
+    updateLocationDisplay();
+  }
+}
+
+function reverseGeocode(lat, lon) {
+  // Using a free reverse geocoding service
+  fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`)
+    .then(response => response.json())
+    .then(data => {
+      if (data && data.address) {
+        const city = data.address.city || data.address.town || data.address.village || data.address.municipality || "";
+        const country = data.address.country || "";
+        if (city || country) {
+          locationName = city ? `${city}, ${country}` : country;
+          updateLocationDisplay();
+        }
+      }
+    })
+    .catch(err => {
+      console.log("Reverse geocoding error:", err);
+    });
+}
+
+function updateLocationDisplay() {
+  const locationEl = document.getElementById('location-display');
+  if (locationEl) {
+    locationEl.textContent = `📍 ${locationName}`;
+  }
+}
 
 // Utility Functions
 function toJulianDay(date) {
@@ -391,13 +453,16 @@ function getVoidOfCourse(date) {
 }
 
 function getMoonRiseSet(date) {
-  // Simplified calculation for Casablanca
+  // More accurate calculation using location
   const dayOfYear = Math.floor((date - new Date(date.getFullYear(), 0, 0)) / (1000 * 60 * 60 * 24));
   const phase = getMoonPhase(date) / 360;
   
-  // Base times adjusted by phase
-  const riseHour = (6 + phase * 24 + Math.sin(dayOfYear * 0.0172) * 2) % 24;
-  const setHour = (riseHour + 12 + Math.random() * 2) % 24;
+  // Adjust for latitude
+  const latFactor = Math.cos(LAT * Math.PI / 180);
+  
+  // Base times adjusted by phase and location
+  const riseHour = (6 + phase * 24 + Math.sin(dayOfYear * 0.0172) * 2 * latFactor) % 24;
+  const setHour = (riseHour + 12 + latFactor * 2) % 24;
   
   const rise = new Date(date);
   rise.setHours(Math.floor(riseHour), Math.floor((riseHour % 1) * 60), 0);
@@ -689,6 +754,9 @@ document.addEventListener('DOMContentLoaded', () => {
   updateCurrentTime();
   updateDailyView();
   updateMonthlyCalendar();
+  
+  // Initialize geolocation
+  initGeolocation();
   
   setInterval(updateCurrentTime, 60000);
   
