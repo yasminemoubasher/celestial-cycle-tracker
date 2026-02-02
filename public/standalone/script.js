@@ -69,73 +69,103 @@ const RETROGRADE_PLANETS = [
   { planet: "Pluto", emoji: "♇", retroStart: new Date(2025, 4, 4), retroEnd: new Date(2025, 9, 13) }
 ];
 
-// Default coordinates (Casablanca) - will be updated with device location
+// Popular cities with coordinates
+const CITIES = [
+  { name: "New York, USA", lat: 40.7128, lon: -74.0060 },
+  { name: "Los Angeles, USA", lat: 34.0522, lon: -118.2437 },
+  { name: "Chicago, USA", lat: 41.8781, lon: -87.6298 },
+  { name: "London, UK", lat: 51.5074, lon: -0.1278 },
+  { name: "Paris, France", lat: 48.8566, lon: 2.3522 },
+  { name: "Berlin, Germany", lat: 52.5200, lon: 13.4050 },
+  { name: "Rome, Italy", lat: 41.9028, lon: 12.4964 },
+  { name: "Madrid, Spain", lat: 40.4168, lon: -3.7038 },
+  { name: "Amsterdam, Netherlands", lat: 52.3676, lon: 4.9041 },
+  { name: "Dubai, UAE", lat: 25.2048, lon: 55.2708 },
+  { name: "Tokyo, Japan", lat: 35.6762, lon: 139.6503 },
+  { name: "Beijing, China", lat: 39.9042, lon: 116.4074 },
+  { name: "Shanghai, China", lat: 31.2304, lon: 121.4737 },
+  { name: "Hong Kong", lat: 22.3193, lon: 114.1694 },
+  { name: "Singapore", lat: 1.3521, lon: 103.8198 },
+  { name: "Sydney, Australia", lat: -33.8688, lon: 151.2093 },
+  { name: "Melbourne, Australia", lat: -37.8136, lon: 144.9631 },
+  { name: "Mumbai, India", lat: 19.0760, lon: 72.8777 },
+  { name: "Delhi, India", lat: 28.7041, lon: 77.1025 },
+  { name: "Cairo, Egypt", lat: 30.0444, lon: 31.2357 },
+  { name: "Casablanca, Morocco", lat: 33.5731, lon: -7.5898 },
+  { name: "Johannesburg, South Africa", lat: -26.2041, lon: 28.0473 },
+  { name: "Lagos, Nigeria", lat: 6.5244, lon: 3.3792 },
+  { name: "São Paulo, Brazil", lat: -23.5505, lon: -46.6333 },
+  { name: "Rio de Janeiro, Brazil", lat: -22.9068, lon: -43.1729 },
+  { name: "Mexico City, Mexico", lat: 19.4326, lon: -99.1332 },
+  { name: "Buenos Aires, Argentina", lat: -34.6037, lon: -58.3816 },
+  { name: "Toronto, Canada", lat: 43.6532, lon: -79.3832 },
+  { name: "Vancouver, Canada", lat: 49.2827, lon: -123.1207 },
+  { name: "Moscow, Russia", lat: 55.7558, lon: 37.6173 },
+  { name: "Istanbul, Turkey", lat: 41.0082, lon: 28.9784 },
+  { name: "Bangkok, Thailand", lat: 13.7563, lon: 100.5018 },
+  { name: "Jakarta, Indonesia", lat: -6.2088, lon: 106.8456 },
+  { name: "Manila, Philippines", lat: 14.5995, lon: 120.9842 },
+  { name: "Seoul, South Korea", lat: 37.5665, lon: 126.9780 },
+  { name: "Riyadh, Saudi Arabia", lat: 24.7136, lon: 46.6753 },
+  { name: "Tehran, Iran", lat: 35.6892, lon: 51.3890 },
+  { name: "Kuala Lumpur, Malaysia", lat: 3.1390, lon: 101.6869 },
+  { name: "Vienna, Austria", lat: 48.2082, lon: 16.3738 },
+  { name: "Zurich, Switzerland", lat: 47.3769, lon: 8.5417 }
+];
+
+// Default coordinates (Casablanca) - will be updated with location selection
 let LAT = 33.5731;
 let LON = -7.5898;
 let locationName = "Casablanca, Morocco";
-let locationLoaded = false;
 
 // State
 let selectedDate = new Date();
 let currentMonth = new Date();
 
-// Geolocation
-function initGeolocation() {
-  if ("geolocation" in navigator) {
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        LAT = position.coords.latitude;
-        LON = position.coords.longitude;
-        locationLoaded = true;
-        
-        // Try to get location name using reverse geocoding
-        reverseGeocode(LAT, LON);
-        
-        // Update the display with new location data
-        updateDailyView();
-        updateMonthlyCalendar();
-        updateLocationDisplay();
-      },
-      (error) => {
-        console.log("Geolocation error:", error.message);
-        locationLoaded = true;
-        updateLocationDisplay();
-      },
-      {
-        enableHighAccuracy: true,
-        timeout: 10000,
-        maximumAge: 300000 // Cache for 5 minutes
-      }
-    );
-  } else {
-    locationLoaded = true;
-    updateLocationDisplay();
+// Location Selection
+function initLocationSelector() {
+  const locationSelect = document.getElementById('location-select');
+  if (!locationSelect) return;
+  
+  // Populate dropdown with cities
+  CITIES.forEach((city, index) => {
+    const option = document.createElement('option');
+    option.value = index;
+    option.textContent = city.name;
+    if (city.name === "Casablanca, Morocco") {
+      option.selected = true;
+    }
+    locationSelect.appendChild(option);
+  });
+  
+  // Load saved location from localStorage
+  const savedLocation = localStorage.getItem('selectedLocation');
+  if (savedLocation) {
+    const savedIndex = parseInt(savedLocation);
+    if (savedIndex >= 0 && savedIndex < CITIES.length) {
+      locationSelect.value = savedIndex;
+      updateLocation(savedIndex);
+    }
   }
+  
+  // Handle location change
+  locationSelect.addEventListener('change', (e) => {
+    const index = parseInt(e.target.value);
+    updateLocation(index);
+    localStorage.setItem('selectedLocation', index);
+  });
 }
 
-function reverseGeocode(lat, lon) {
-  // Using a free reverse geocoding service
-  fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`)
-    .then(response => response.json())
-    .then(data => {
-      if (data && data.address) {
-        const city = data.address.city || data.address.town || data.address.village || data.address.municipality || "";
-        const country = data.address.country || "";
-        if (city || country) {
-          locationName = city ? `${city}, ${country}` : country;
-          updateLocationDisplay();
-        }
-      }
-    })
-    .catch(err => {
-      console.log("Reverse geocoding error:", err);
-    });
-}
-
-function updateLocationDisplay() {
-  const locationEl = document.getElementById('location-display');
-  if (locationEl) {
-    locationEl.textContent = `📍 ${locationName}`;
+function updateLocation(cityIndex) {
+  const city = CITIES[cityIndex];
+  if (city) {
+    LAT = city.lat;
+    LON = city.lon;
+    locationName = city.name;
+    
+    // Update the display with new location data
+    updateDailyView();
+    updateMonthlyCalendar();
   }
 }
 
@@ -351,28 +381,24 @@ function findSignCrossing(date, direction) {
 
 function getMansion(longitude) {
   const mansionSize = 360 / 28;
-  for (let i = MOON_MANSIONS.length - 1; i >= 0; i--) {
-    if (longitude >= MOON_MANSIONS[i].startDegree) {
-      return MOON_MANSIONS[i];
-    }
-  }
-  return MOON_MANSIONS[0];
+  const mansionIndex = Math.floor(longitude / mansionSize);
+  return MOON_MANSIONS[mansionIndex];
 }
 
 function findMansionCrossing(date, direction) {
   const currentLong = getMoonLongitude(date);
-  const currentMansion = getMansion(currentLong);
+  const mansionSize = 360 / 28;
+  const currentMansionIndex = Math.floor(currentLong / mansionSize);
   
   const step = direction === 'start' ? -1 : 1;
-  let searchDate = new Date(date);
   
   // Coarse search
   for (let i = 0; i < 48; i++) {
-    searchDate = new Date(date.getTime() + step * i * 60 * 60 * 1000);
+    const searchDate = new Date(date.getTime() + step * i * 60 * 60 * 1000);
     const long = getMoonLongitude(searchDate);
-    const mansion = getMansion(long);
+    const mansionIdx = Math.floor(long / mansionSize);
     
-    if (mansion.number !== currentMansion.number) {
+    if (mansionIdx !== currentMansionIndex) {
       // Fine search
       let low, high;
       if (direction === 'start') {
@@ -386,23 +412,22 @@ function findMansionCrossing(date, direction) {
       for (let j = 0; j < 15; j++) {
         const mid = new Date((low.getTime() + high.getTime()) / 2);
         const midLong = getMoonLongitude(mid);
-        const midMansion = getMansion(midLong);
+        const midMansionIdx = Math.floor(midLong / mansionSize);
         
-        if (midMansion.number === currentMansion.number) {
-          if (direction === 'start') {
+        if (direction === 'start') {
+          if (midMansionIdx === currentMansionIndex) {
             high = mid;
           } else {
             low = mid;
           }
         } else {
-          if (direction === 'start') {
+          if (midMansionIdx === currentMansionIndex) {
             low = mid;
           } else {
             high = mid;
           }
         }
       }
-      
       return direction === 'start' ? high : high;
     }
   }
@@ -411,45 +436,76 @@ function findMansionCrossing(date, direction) {
 }
 
 function getVoidOfCourse(date) {
-  // VOC starts when moon makes last major aspect before leaving sign
-  // VOC ends when moon enters new sign
-  
+  // Find when the Moon leaves the current sign
   const signEnd = findSignCrossing(date, 'end');
-  if (!signEnd) return { isVoid: false };
   
-  // Check if we're within 24 hours of sign change
-  const hoursToSignChange = (signEnd.getTime() - date.getTime()) / (1000 * 60 * 60);
+  if (!signEnd) {
+    return { isVoid: false, text: "Moon active in sign" };
+  }
   
-  if (hoursToSignChange > 0 && hoursToSignChange < 24) {
-    // Simplified: VOC starts ~2-4 hours before sign change
-    const vocHours = Math.min(4, hoursToSignChange);
-    const vocStart = new Date(signEnd.getTime() - vocHours * 60 * 60 * 1000);
-    
-    const isCurrentlyVoid = date >= vocStart && date < signEnd;
-    
+  // Check if VOC has already started (find last major aspect)
+  const currentLong = getMoonLongitude(date);
+  const currentSignIndex = Math.floor(currentLong / 30);
+  
+  // Simplified: VOC starts when moon is in last 2 degrees of sign
+  const degreeInSign = currentLong % 30;
+  
+  if (degreeInSign >= 28) {
+    // Currently void of course
     return {
-      isVoid: isCurrentlyVoid,
-      vocStart: vocStart,
-      vocEnd: signEnd
+      isVoid: true,
+      start: date,
+      end: signEnd,
+      text: `Void of Course until ${formatTime(signEnd)}`
     };
   }
   
-  // Check previous sign change for ongoing VOC
-  const signStart = findSignCrossing(date, 'start');
-  if (signStart) {
-    const hoursSinceSignChange = (date.getTime() - signStart.getTime()) / (1000 * 60 * 60);
-    if (hoursSinceSignChange < 2) {
-      // Just entered new sign, may still show previous VOC info
-      const prevVocStart = new Date(signStart.getTime() - 4 * 60 * 60 * 1000);
-      return {
-        isVoid: false,
-        vocStart: prevVocStart,
-        vocEnd: signStart
-      };
+  // Find when VOC will start (when moon reaches 28 degrees of current sign)
+  const vocStartDegree = currentSignIndex * 30 + 28;
+  let vocStart = null;
+  
+  // Search for when moon reaches 28 degrees
+  for (let i = 0; i < 72; i++) {
+    const searchDate = new Date(date.getTime() + i * 60 * 60 * 1000);
+    const long = getMoonLongitude(searchDate);
+    const searchSignIdx = Math.floor(long / 30);
+    
+    if (searchSignIdx !== currentSignIndex) break;
+    
+    if (long % 30 >= 28) {
+      // Fine search
+      let low = new Date(searchDate.getTime() - 60 * 60 * 1000);
+      let high = searchDate;
+      
+      for (let j = 0; j < 15; j++) {
+        const mid = new Date((low.getTime() + high.getTime()) / 2);
+        const midLong = getMoonLongitude(mid);
+        
+        if (midLong % 30 >= 28) {
+          high = mid;
+        } else {
+          low = mid;
+        }
+      }
+      vocStart = high;
+      break;
     }
   }
   
-  return { isVoid: false };
+  if (vocStart && signEnd) {
+    return {
+      isVoid: false,
+      start: vocStart,
+      end: signEnd,
+      text: `VOC: ${formatTime(vocStart)} - ${formatTime(signEnd)}`
+    };
+  }
+  
+  return { isVoid: false, text: "Moon active in sign" };
+}
+
+function getRetrogradePlanets(date) {
+  return RETROGRADE_PLANETS.filter(p => date >= p.retroStart && date <= p.retroEnd);
 }
 
 function getMoonRiseSet(date) {
@@ -473,200 +529,212 @@ function getMoonRiseSet(date) {
   return { rise, set };
 }
 
-function getRetrogradePlanets(date) {
-  return RETROGRADE_PLANETS.filter(p => date >= p.retroStart && date <= p.retroEnd);
+// Formatting
+function formatTime(date) {
+  if (!date) return "--:--";
+  return date.toLocaleTimeString('en-US', { 
+    hour: 'numeric', 
+    minute: '2-digit',
+    hour12: true 
+  });
 }
 
-// Formatting Functions
-function formatTime12hr(date) {
-  if (!date) return "—";
-  let hours = date.getHours();
-  const minutes = date.getMinutes();
-  const ampm = hours >= 12 ? 'PM' : 'AM';
-  hours = hours % 12 || 12;
-  return `${hours}:${minutes.toString().padStart(2, '0')} ${ampm}`;
+function formatDate(date) {
+  return date.toLocaleDateString('en-US', { 
+    weekday: 'long', 
+    year: 'numeric', 
+    month: 'long', 
+    day: 'numeric' 
+  });
 }
 
-function formatDateShort(date) {
-  if (!date) return "";
-  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-  return `${months[date.getMonth()]} ${date.getDate()}`;
-}
-
-function formatDateLong(date) {
-  const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-  const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-  return `${days[date.getDay()]}, ${months[date.getMonth()]} ${date.getDate()}`;
-}
-
-function isSameDay(d1, d2) {
-  return d1.getDate() === d2.getDate() && 
-         d1.getMonth() === d2.getMonth() && 
-         d1.getFullYear() === d2.getFullYear();
+function formatShortDate(date) {
+  return date.toLocaleDateString('en-US', { 
+    month: 'short', 
+    day: 'numeric' 
+  });
 }
 
 // Star Background
-function createStars() {
+function createStarBackground() {
   const container = document.getElementById('star-background');
+  if (!container) return;
+  
   container.innerHTML = '';
   
-  for (let i = 0; i < 100; i++) {
+  // Create stars
+  for (let i = 0; i < 150; i++) {
     const star = document.createElement('div');
     star.className = 'star';
-    star.style.left = `${Math.random() * 100}%`;
-    star.style.top = `${Math.random() * 100}%`;
-    star.style.width = `${Math.random() * 2 + 1}px`;
+    star.style.left = Math.random() * 100 + '%';
+    star.style.top = Math.random() * 100 + '%';
+    star.style.width = (Math.random() * 2 + 1) + 'px';
     star.style.height = star.style.width;
-    star.style.animationDelay = `${Math.random() * 3}s`;
-    star.style.setProperty('--move-x', `${(Math.random() - 0.5) * 30}px`);
-    star.style.setProperty('--move-y', `${(Math.random() - 0.5) * 20}px`);
+    star.style.animationDelay = Math.random() * 3 + 's';
+    star.style.animationDuration = (Math.random() * 2 + 2) + 's';
     container.appendChild(star);
   }
   
-  // Shooting stars
-  for (let i = 0; i < 3; i++) {
-    const shooting = document.createElement('div');
-    shooting.className = 'shooting-star';
-    shooting.style.top = `${10 + i * 25}%`;
-    shooting.style.animationDelay = `${i * 5}s`;
-    container.appendChild(shooting);
-  }
+  // Create shooting stars periodically
+  setInterval(() => {
+    if (Math.random() > 0.7) {
+      createShootingStar(container);
+    }
+  }, 3000);
+}
+
+function createShootingStar(container) {
+  const star = document.createElement('div');
+  star.className = 'shooting-star';
+  star.style.left = Math.random() * 70 + '%';
+  star.style.top = Math.random() * 30 + '%';
+  container.appendChild(star);
+  
+  setTimeout(() => star.remove(), 1000);
 }
 
 // Update Functions
 function updateCurrentTime() {
   const now = new Date();
-  document.getElementById('current-date').textContent = formatDateLong(now);
-  document.getElementById('current-time').textContent = formatTime12hr(now);
+  document.getElementById('current-date').textContent = formatDate(now);
+  document.getElementById('current-time').textContent = formatTime(now);
 }
 
 function updateDailyView() {
-  const longitude = getMoonLongitude(selectedDate);
-  const zodiacInfo = getZodiacSign(longitude);
-  const phaseInfo = getPhaseInfo(selectedDate);
-  const mansion = getMansion(longitude);
-  const illumination = getIllumination(selectedDate);
-  const voc = getVoidOfCourse(selectedDate);
-  const riseSet = getMoonRiseSet(selectedDate);
-  const retroPlanets = getRetrogradePlanets(selectedDate);
+  const date = selectedDate;
+  const now = new Date();
+  const isToday = date.toDateString() === now.toDateString();
   
-  // Selected date
-  document.getElementById('selected-date').textContent = formatDateLong(selectedDate);
-  document.getElementById('return-today').style.display = isSameDay(selectedDate, new Date()) ? 'none' : 'block';
+  // Update selected date display
+  document.getElementById('selected-date').textContent = formatDate(date);
+  document.getElementById('return-today').style.display = isToday ? 'none' : 'block';
   
   // Moon Phase
+  const phaseInfo = getPhaseInfo(date);
   document.getElementById('phase-emoji').textContent = phaseInfo.emoji;
   document.getElementById('phase-name').textContent = phaseInfo.name;
-  document.getElementById('illumination').textContent = `${illumination}%`;
+  document.getElementById('illumination').textContent = getIllumination(date) + '% illuminated';
   
   // Exact phase time
   const exactPhaseBox = document.getElementById('exact-phase-box');
-  if (phaseInfo.index === 0 || phaseInfo.index === 4 || phaseInfo.index === 2 || phaseInfo.index === 6) {
-    const targetPhase = phaseInfo.index === 0 ? 0 : phaseInfo.index === 4 ? 180 : phaseInfo.index === 2 ? 90 : 270;
-    const exactTime = findExactPhaseTime(selectedDate, targetPhase);
-    
-    if (exactTime && Math.abs(exactTime.getTime() - selectedDate.getTime()) < 3 * 24 * 60 * 60 * 1000) {
-      exactPhaseBox.style.display = 'block';
-      document.getElementById('exact-phase-label').textContent = `${phaseInfo.name} Exact Time`;
-      document.getElementById('exact-phase-time').textContent = `${formatDateShort(exactTime)} at ${formatTime12hr(exactTime)}`;
-    } else {
-      exactPhaseBox.style.display = 'none';
+  const phaseTargets = [0, 90, 180, 270]; // New, First Quarter, Full, Last Quarter
+  const phaseNames = ['New Moon', 'First Quarter', 'Full Moon', 'Last Quarter'];
+  
+  let nearestPhase = null;
+  let nearestDiff = Infinity;
+  
+  phaseTargets.forEach((target, idx) => {
+    const exactTime = findExactPhaseTime(date, target);
+    if (exactTime) {
+      const diff = Math.abs(exactTime.getTime() - date.getTime());
+      if (diff < nearestDiff && diff < 24 * 60 * 60 * 1000) {
+        nearestDiff = diff;
+        nearestPhase = { name: phaseNames[idx], time: exactTime };
+      }
     }
+  });
+  
+  if (nearestPhase) {
+    exactPhaseBox.style.display = 'block';
+    document.getElementById('exact-phase-label').textContent = nearestPhase.name + ' at';
+    document.getElementById('exact-phase-time').textContent = formatTime(nearestPhase.time);
   } else {
     exactPhaseBox.style.display = 'none';
   }
   
-  // Rise/Set
-  document.getElementById('moon-rise').textContent = formatTime12hr(riseSet.rise);
-  document.getElementById('moon-set').textContent = formatTime12hr(riseSet.set);
+  // Moon Rise/Set
+  const riseSet = getMoonRiseSet(date);
+  document.getElementById('moon-rise').textContent = formatTime(riseSet.rise);
+  document.getElementById('moon-set').textContent = formatTime(riseSet.set);
+  
+  // Zodiac
+  const moonLong = getMoonLongitude(date);
+  const zodiac = getZodiacSign(moonLong);
+  document.getElementById('zodiac-emoji').textContent = zodiac.sign.emoji;
+  document.getElementById('zodiac-sign').textContent = zodiac.sign.name;
+  document.getElementById('zodiac-degree').textContent = zodiac.degree + '° ' + zodiac.sign.name;
+  
+  const signStart = findSignCrossing(date, 'start');
+  const signEnd = findSignCrossing(date, 'end');
+  document.getElementById('zodiac-timing').textContent = 
+    `${formatShortDate(signStart)} ${formatTime(signStart)} - ${formatShortDate(signEnd)} ${formatTime(signEnd)}`;
+  
+  const elementDescriptions = {
+    fire: "Fiery, passionate, and action-oriented energy",
+    earth: "Grounded, practical, and stable energy",
+    air: "Intellectual, communicative, and social energy",
+    water: "Emotional, intuitive, and nurturing energy"
+  };
+  document.getElementById('zodiac-desc').textContent = elementDescriptions[zodiac.sign.element];
   
   // Mansion
+  const mansion = getMansion(moonLong);
   document.getElementById('mansion-number').textContent = mansion.number;
   document.getElementById('mansion-name').textContent = mansion.name;
   
-  const mansionStart = findMansionCrossing(selectedDate, 'start');
-  const mansionEnd = findMansionCrossing(selectedDate, 'end');
+  const mansionStart = findMansionCrossing(date, 'start');
+  const mansionEnd = findMansionCrossing(date, 'end');
   document.getElementById('mansion-timing').textContent = 
-    `${formatDateShort(mansionStart)} ${formatTime12hr(mansionStart)} – ${formatDateShort(mansionEnd)} ${formatTime12hr(mansionEnd)}`;
-  
-  // Zodiac
-  document.getElementById('zodiac-emoji').textContent = zodiacInfo.sign.emoji;
-  document.getElementById('zodiac-sign').textContent = zodiacInfo.sign.name;
-  document.getElementById('zodiac-degree').textContent = `${zodiacInfo.degree}° in ${zodiacInfo.sign.name}`;
-  
-  const signStart = findSignCrossing(selectedDate, 'start');
-  const signEnd = findSignCrossing(selectedDate, 'end');
-  document.getElementById('zodiac-timing').textContent = 
-    `${formatDateShort(signStart)} ${formatTime12hr(signStart)} – ${formatDateShort(signEnd)} ${formatTime12hr(signEnd)}`;
-  
-  const elementDescriptions = {
-    fire: "fiery passion and initiative",
-    earth: "grounded stability and practicality",
-    air: "intellectual curiosity and social connection",
-    water: "deep sensitivity and intuitive awareness"
-  };
-  document.getElementById('zodiac-desc').textContent = 
-    `The Moon is transiting through ${zodiacInfo.sign.name}, influencing emotions with ${elementDescriptions[zodiacInfo.sign.element]}.`;
+    `${formatShortDate(mansionStart)} ${formatTime(mansionStart)} - ${formatShortDate(mansionEnd)} ${formatTime(mansionEnd)}`;
   
   // Void of Course
+  const voc = getVoidOfCourse(date);
   const vocCard = document.getElementById('voc-card');
   const vocStatus = document.getElementById('voc-status');
   const vocText = document.getElementById('voc-text');
   const vocTiming = document.getElementById('voc-timing');
   
   if (voc.isVoid) {
-    vocCard.classList.add('active');
-    vocStatus.textContent = 'ACTIVE';
-    vocStatus.className = 'voc-status active';
-    vocText.textContent = 'The Moon is currently void of course. This is a time of pause — avoid starting new projects or making major decisions.';
-    if (voc.vocStart && voc.vocEnd) {
-      vocTiming.style.display = 'block';
-      document.getElementById('voc-times').textContent = 
-        `${formatDateShort(voc.vocStart)} ${formatTime12hr(voc.vocStart)} – ${formatDateShort(voc.vocEnd)} ${formatTime12hr(voc.vocEnd)}`;
-    }
+    vocCard.classList.add('voc-active');
+    vocStatus.textContent = '⚠️ Active';
+    vocText.textContent = voc.text;
+    vocTiming.style.display = 'block';
+    document.getElementById('voc-times').textContent = `Until ${formatTime(voc.end)}`;
+  } else if (voc.start) {
+    vocCard.classList.remove('voc-active');
+    vocStatus.textContent = '✓ Clear';
+    vocText.textContent = 'Moon making aspects';
+    vocTiming.style.display = 'block';
+    document.getElementById('voc-times').textContent = voc.text;
   } else {
-    vocCard.classList.remove('active');
-    vocStatus.textContent = 'INACTIVE';
-    vocStatus.className = 'voc-status inactive';
-    vocText.textContent = 'The Moon is actively aspecting planets. This is a favorable time for initiating actions and making important decisions.';
+    vocCard.classList.remove('voc-active');
+    vocStatus.textContent = '✓ Clear';
+    vocText.textContent = 'Moon active in sign';
     vocTiming.style.display = 'none';
   }
   
   // Retrograde Planets
+  const retroPlanets = getRetrogradePlanets(date);
   const retroContainer = document.getElementById('retro-planets');
-  if (retroPlanets.length > 0) {
+  
+  if (retroPlanets.length === 0) {
+    retroContainer.innerHTML = '<p class="no-retro">No planets in retrograde</p>';
+  } else {
     retroContainer.innerHTML = retroPlanets.map(p => `
       <div class="retro-planet">
-        <div class="retro-planet-info">
-          <span class="retro-planet-emoji">${p.emoji}</span>
-          <div>
-            <p class="retro-planet-name">${p.planet} ℞</p>
-            <p class="retro-planet-label">Retrograde</p>
-          </div>
-        </div>
-        <span class="retro-planet-dates">${formatDateShort(p.retroStart)} – ${formatDateShort(p.retroEnd)}</span>
+        <span class="retro-emoji">${p.emoji}</span>
+        <span class="retro-name">${p.planet}</span>
+        <span class="retro-dates">${formatShortDate(p.retroStart)} - ${formatShortDate(p.retroEnd)}</span>
       </div>
     `).join('');
-  } else {
-    retroContainer.innerHTML = '<p class="no-retro">No planets are currently retrograde. Forward motion prevails — a time of clarity and progress.</p>';
   }
   
   // Summary
   document.getElementById('summary-phase').textContent = phaseInfo.emoji;
   document.getElementById('summary-phase-name').textContent = phaseInfo.name;
-  document.getElementById('summary-zodiac').textContent = zodiacInfo.sign.emoji;
-  document.getElementById('summary-zodiac-name').textContent = zodiacInfo.sign.name;
-  document.getElementById('summary-mansion').textContent = `Mansion ${mansion.number}`;
+  document.getElementById('summary-zodiac').textContent = zodiac.sign.emoji;
+  document.getElementById('summary-zodiac-name').textContent = 'Moon in ' + zodiac.sign.name;
+  document.getElementById('summary-mansion').textContent = 'Mansion ' + mansion.number;
   document.getElementById('summary-voc-emoji').textContent = voc.isVoid ? '⚠️' : '✓';
-  document.getElementById('summary-voc').textContent = voc.isVoid ? 'Void Active' : 'Not Void';
+  document.getElementById('summary-voc').textContent = voc.isVoid ? 'Void of Course' : 'Moon Active';
 }
 
 function updateMonthlyCalendar() {
   const year = currentMonth.getFullYear();
   const month = currentMonth.getMonth();
   
-  const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-  document.getElementById('month-title').textContent = `${months[month]} ${year}`;
+  document.getElementById('month-title').textContent = 
+    new Date(year, month).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
   
   const firstDay = new Date(year, month, 1);
   const lastDay = new Date(year, month + 1, 0);
@@ -675,60 +743,59 @@ function updateMonthlyCalendar() {
   const container = document.getElementById('calendar-days');
   container.innerHTML = '';
   
-  // Previous month padding
-  const prevMonth = new Date(year, month, 0);
-  for (let i = startPadding - 1; i >= 0; i--) {
-    const day = prevMonth.getDate() - i;
-    const date = new Date(year, month - 1, day);
-    container.appendChild(createDayElement(date, true));
+  // Empty cells for padding
+  for (let i = 0; i < startPadding; i++) {
+    const cell = document.createElement('div');
+    cell.className = 'calendar-day empty';
+    container.appendChild(cell);
   }
   
-  // Current month
-  for (let i = 1; i <= lastDay.getDate(); i++) {
-    const date = new Date(year, month, i);
-    container.appendChild(createDayElement(date, false));
-  }
-  
-  // Next month padding
-  const remaining = 42 - (startPadding + lastDay.getDate());
-  for (let i = 1; i <= remaining; i++) {
-    const date = new Date(year, month + 1, i);
-    container.appendChild(createDayElement(date, true));
+  // Days of the month
+  const today = new Date();
+  for (let day = 1; day <= lastDay.getDate(); day++) {
+    const date = new Date(year, month, day, 12);
+    const phaseInfo = getPhaseInfo(date);
+    const isToday = date.toDateString() === today.toDateString();
+    
+    const cell = document.createElement('div');
+    cell.className = 'calendar-day' + (isToday ? ' today' : '');
+    cell.innerHTML = `
+      <span class="day-number">${day}</span>
+      <span class="day-phase">${phaseInfo.emoji}</span>
+    `;
+    
+    cell.addEventListener('click', () => showDayDialog(date));
+    container.appendChild(cell);
   }
 }
 
-function createDayElement(date, isOtherMonth) {
-  const div = document.createElement('div');
-  div.className = 'calendar-day';
-  if (isOtherMonth) div.classList.add('other-month');
-  if (isSameDay(date, new Date())) div.classList.add('today');
-  if (isSameDay(date, selectedDate)) div.classList.add('selected');
-  
-  const voc = getVoidOfCourse(date);
-  if (voc.isVoid) div.classList.add('voc-day');
-  
+function showMansionDialog(mansion) {
+  document.getElementById('dialog-mansion-name').textContent = `${mansion.number}. ${mansion.name}`;
+  document.getElementById('dialog-essence').textContent = mansion.essence;
+  document.getElementById('dialog-good').textContent = mansion.goodFor;
+  document.getElementById('dialog-bad').textContent = mansion.badFor;
+  document.getElementById('mansion-dialog').style.display = 'flex';
+}
+
+function showDayDialog(date) {
   const phaseInfo = getPhaseInfo(date);
+  const moonLong = getMoonLongitude(date);
+  const zodiac = getZodiacSign(moonLong);
+  const mansion = getMansion(moonLong);
   
-  div.innerHTML = `
-    <span class="day-number">${date.getDate()}</span>
-    <span class="day-phase">${phaseInfo.emoji}</span>
+  document.getElementById('day-dialog-title').textContent = formatDate(date);
+  document.getElementById('day-dialog-phase').innerHTML = `
+    <span class="day-dialog-emoji">${phaseInfo.emoji}</span>
+    <span>${phaseInfo.name} - ${getIllumination(date)}% illuminated</span>
   `;
-  
-  div.addEventListener('click', () => openDayDialog(date));
-  
-  return div;
-}
-
-function openDayDialog(date) {
-  const longitude = getMoonLongitude(date);
-  const zodiacInfo = getZodiacSign(longitude);
-  const phaseInfo = getPhaseInfo(date);
-  const mansion = getMansion(longitude);
-  
-  document.getElementById('day-dialog-title').textContent = formatDateLong(date);
-  document.getElementById('day-dialog-phase').innerHTML = `<span>${phaseInfo.emoji}</span><span>${phaseInfo.name}</span>`;
-  document.getElementById('day-dialog-zodiac').innerHTML = `<span>${zodiacInfo.sign.emoji}</span><span>Moon in ${zodiacInfo.sign.name}</span>`;
-  document.getElementById('day-dialog-mansion').innerHTML = `<span>🏛️</span><span>Mansion ${mansion.number}: ${mansion.name}</span>`;
+  document.getElementById('day-dialog-zodiac').innerHTML = `
+    <span class="day-dialog-emoji">${zodiac.sign.emoji}</span>
+    <span>Moon in ${zodiac.sign.name} at ${zodiac.degree}°</span>
+  `;
+  document.getElementById('day-dialog-mansion').innerHTML = `
+    <span class="day-dialog-emoji">🏛️</span>
+    <span>Mansion ${mansion.number}: ${mansion.name}</span>
+  `;
   document.getElementById('day-dialog-essence').textContent = mansion.essence;
   document.getElementById('day-dialog-good').textContent = mansion.goodFor;
   document.getElementById('day-dialog-bad').textContent = mansion.badFor;
@@ -736,27 +803,15 @@ function openDayDialog(date) {
   document.getElementById('day-dialog').style.display = 'flex';
 }
 
-function openMansionDialog() {
-  const longitude = getMoonLongitude(selectedDate);
-  const mansion = getMansion(longitude);
-  
-  document.getElementById('dialog-mansion-name').textContent = `Mansion ${mansion.number}: ${mansion.name}`;
-  document.getElementById('dialog-essence').textContent = mansion.essence;
-  document.getElementById('dialog-good').textContent = mansion.goodFor;
-  document.getElementById('dialog-bad').textContent = mansion.badFor;
-  
-  document.getElementById('mansion-dialog').style.display = 'flex';
-}
-
 // Event Listeners
 document.addEventListener('DOMContentLoaded', () => {
-  createStars();
+  createStarBackground();
   updateCurrentTime();
   updateDailyView();
   updateMonthlyCalendar();
   
-  // Initialize geolocation
-  initGeolocation();
+  // Initialize location selector
+  initLocationSelector();
   
   setInterval(updateCurrentTime, 60000);
   
@@ -765,9 +820,8 @@ document.addEventListener('DOMContentLoaded', () => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
       document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-      
       btn.classList.add('active');
-      document.getElementById(`${btn.dataset.tab}-view`).classList.add('active');
+      document.getElementById(btn.dataset.tab + '-view').classList.add('active');
     });
   });
   
@@ -799,21 +853,25 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   
   // Mansion dialog
-  document.getElementById('mansion-name').addEventListener('click', openMansionDialog);
+  document.getElementById('mansion-name').addEventListener('click', () => {
+    const moonLong = getMoonLongitude(selectedDate);
+    const mansion = getMansion(moonLong);
+    showMansionDialog(mansion);
+  });
   
   document.getElementById('close-mansion-dialog').addEventListener('click', () => {
     document.getElementById('mansion-dialog').style.display = 'none';
   });
   
-  document.getElementById('close-day-dialog').addEventListener('click', () => {
-    document.getElementById('day-dialog').style.display = 'none';
-  });
-  
-  // Close dialogs on overlay click
   document.getElementById('mansion-dialog').addEventListener('click', (e) => {
     if (e.target.id === 'mansion-dialog') {
       document.getElementById('mansion-dialog').style.display = 'none';
     }
+  });
+  
+  // Day dialog
+  document.getElementById('close-day-dialog').addEventListener('click', () => {
+    document.getElementById('day-dialog').style.display = 'none';
   });
   
   document.getElementById('day-dialog').addEventListener('click', (e) => {
