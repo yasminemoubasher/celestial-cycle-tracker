@@ -77,18 +77,18 @@ body {
   z-index: 10;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem 1rem;
+  padding: 1.5rem 1rem;
 }
 
 /* Header */
 .header {
   text-align: center;
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
 }
 
 .title {
   font-family: 'Cinzel', serif;
-  font-size: 3.5rem;
+  font-size: 3rem;
   font-weight: 600;
   background: linear-gradient(135deg, hsl(var(--moon-silver)), hsl(var(--star-gold)), hsl(var(--cosmic-purple)));
   -webkit-background-clip: text;
@@ -97,13 +97,8 @@ body {
   margin-bottom: 0.5rem;
 }
 
-.subtitle {
-  font-size: 1.25rem;
-  color: hsl(var(--muted-foreground));
-}
-
 .current-time {
-  margin-top: 1rem;
+  margin-top: 0.75rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -136,7 +131,7 @@ body {
   display: flex;
   justify-content: center;
   gap: 0.5rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
   background: hsl(var(--muted) / 0.5);
   padding: 0.25rem;
   border-radius: 0.5rem;
@@ -177,7 +172,7 @@ body {
   align-items: center;
   justify-content: center;
   gap: 1rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
 }
 
 .nav-btn {
@@ -201,7 +196,7 @@ body {
 
 .selected-date {
   font-family: 'Cinzel', serif;
-  font-size: 1.25rem;
+  font-size: 1.125rem;
   font-weight: 600;
   background: linear-gradient(135deg, hsl(var(--moon-silver)), hsl(var(--star-gold)));
   -webkit-background-clip: text;
@@ -222,12 +217,47 @@ body {
   text-decoration: underline;
 }
 
+/* Scroll Navigation */
+.scroll-section {
+  position: relative;
+}
+
+.scroll-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  padding: 0 0.5rem;
+}
+
+.scroll-nav-btn {
+  background: hsl(var(--muted) / 0.5);
+  border: 1px solid hsl(var(--border));
+  color: hsl(var(--foreground));
+  cursor: pointer;
+  padding: 0.25rem 0.75rem;
+  border-radius: 0.25rem;
+  font-size: 1.25rem;
+  transition: all 0.2s;
+}
+
+.scroll-nav-btn:hover {
+  background: hsl(var(--muted));
+}
+
+.scroll-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: hsl(var(--muted-foreground));
+}
+
 /* Cards */
 .card {
   background: linear-gradient(135deg, hsl(var(--card)) 0%, hsl(222, 47%, 10%) 100%);
   border: 1px solid hsl(var(--border));
   border-radius: 1rem;
-  padding: 1.5rem;
+  padding: 1.25rem;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
@@ -235,7 +265,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
 }
 
 .label {
@@ -245,20 +275,29 @@ body {
   color: hsl(var(--muted-foreground));
 }
 
+.clickable {
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.clickable:hover {
+  opacity: 0.8;
+}
+
 /* Moon Hero */
 .moon-hero {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2rem;
-  padding: 2rem;
-  margin-bottom: 1.5rem;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 @media (min-width: 768px) {
   .moon-hero {
     flex-direction: row;
-    padding: 3rem;
+    padding: 2rem;
   }
 }
 
@@ -275,7 +314,7 @@ body {
 }
 
 .phase-emoji {
-  font-size: 8rem;
+  font-size: 6rem;
   position: relative;
   animation: float 6s ease-in-out infinite;
   filter: drop-shadow(0 0 20px hsl(var(--moon-silver) / 0.5));
@@ -303,7 +342,7 @@ body {
   text-align: center;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.75rem;
 }
 
 @media (min-width: 768px) {
@@ -314,7 +353,7 @@ body {
 
 .phase-name {
   font-family: 'Cinzel', serif;
-  font-size: 2.5rem;
+  font-size: 2rem;
   font-weight: 600;
   background: linear-gradient(135deg, hsl(var(--moon-silver)), hsl(var(--star-gold)));
   -webkit-background-clip: text;
@@ -326,39 +365,39 @@ body {
   background: hsl(var(--accent) / 0.1);
   border: 1px solid hsl(var(--accent) / 0.3);
   border-radius: 0.5rem;
-  padding: 1rem;
+  padding: 0.75rem;
 }
 
 .exact-time {
   font-family: 'Cinzel', serif;
-  font-size: 1.25rem;
+  font-size: 1.125rem;
   color: hsl(var(--star-gold));
 }
 
 .rise-set-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
-  margin-top: 1rem;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
 }
 
 .rise-set-item {
   background: hsl(var(--muted) / 0.3);
-  padding: 0.75rem;
+  padding: 0.5rem;
   border-radius: 0.5rem;
 }
 
 .rise-set-time {
   font-family: 'Cinzel', serif;
-  font-size: 1.125rem;
+  font-size: 1rem;
   margin-top: 0.25rem;
 }
 
 /* Info Grid */
 .info-grid {
   display: grid;
-  gap: 1.5rem;
-  margin-bottom: 1.5rem;
+  gap: 1rem;
+  margin-bottom: 1rem;
 }
 
 @media (min-width: 768px) {
@@ -370,29 +409,21 @@ body {
 /* Mansion Card */
 .mansion-number {
   font-family: 'Cinzel', serif;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-weight: 600;
   color: hsl(var(--cosmic-purple));
 }
 
 .mansion-name {
   font-family: 'Cinzel', serif;
-  font-size: 1.75rem;
+  font-size: 1.5rem;
   font-weight: 600;
   background: linear-gradient(135deg, hsl(var(--moon-silver)), hsl(var(--star-gold)));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  margin-bottom: 1rem;
-}
-
-.mansion-name.clickable {
+  margin-bottom: 0.5rem;
   cursor: pointer;
-  transition: opacity 0.2s;
-}
-
-.mansion-name.clickable:hover {
-  opacity: 0.8;
 }
 
 .mansion-timing {
@@ -400,20 +431,27 @@ body {
   align-items: center;
   gap: 0.5rem;
   color: hsl(var(--muted-foreground));
-  font-size: 0.875rem;
-  margin-bottom: 0.5rem;
-  padding-top: 1rem;
+  font-size: 0.75rem;
+  margin-bottom: 0.25rem;
+  padding-top: 0.5rem;
   border-top: 1px solid hsl(var(--border) / 0.5);
 }
 
 .timing-text {
-  font-size: 0.875rem;
+  font-size: 0.8rem;
   color: hsl(var(--star-gold));
+}
+
+.mansion-item {
+  padding: 0.75rem;
+  background: hsl(var(--muted) / 0.2);
+  border-radius: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 
 /* Zodiac Card */
 .zodiac-emoji {
-  font-size: 2rem;
+  font-size: 1.75rem;
   animation: pulse-glow 2s ease-in-out infinite;
 }
 
@@ -424,19 +462,20 @@ body {
 
 .zodiac-sign {
   font-family: 'Cinzel', serif;
-  font-size: 1.75rem;
+  font-size: 1.5rem;
   font-weight: 600;
   background: linear-gradient(135deg, hsl(var(--moon-silver)), hsl(var(--star-gold)));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  cursor: pointer;
 }
 
 .zodiac-degree {
-  font-size: 1.125rem;
+  font-size: 1rem;
   color: hsl(var(--star-gold));
   margin-top: 0.25rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
 }
 
 .zodiac-timing {
@@ -444,16 +483,17 @@ body {
   align-items: center;
   gap: 0.5rem;
   color: hsl(var(--muted-foreground));
-  font-size: 0.875rem;
-  margin-bottom: 0.5rem;
-  padding-top: 1rem;
+  font-size: 0.75rem;
+  margin-bottom: 0.25rem;
+  padding-top: 0.5rem;
   border-top: 1px solid hsl(var(--border) / 0.5);
 }
 
-.zodiac-desc {
-  font-size: 0.875rem;
-  color: hsl(var(--muted-foreground));
-  margin-top: 0.75rem;
+.zodiac-item {
+  padding: 0.75rem;
+  background: hsl(var(--muted) / 0.2);
+  border-radius: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 
 /* VOC Card */
@@ -482,108 +522,125 @@ body {
 .voc-text {
   color: hsl(var(--muted-foreground));
   line-height: 1.6;
+  font-size: 0.9rem;
 }
 
-.voc-timing {
+.voc-period {
   background: hsl(var(--muted) / 0.3);
-  padding: 0.75rem;
+  padding: 0.5rem;
   border-radius: 0.5rem;
-  margin-top: 0.75rem;
+  margin-top: 0.5rem;
 }
 
-.voc-timing p {
-  font-size: 0.875rem;
+.voc-period p {
+  font-size: 0.85rem;
   color: hsl(var(--void-red));
 }
 
 /* Retro Card */
-.retro-symbol {
-  font-size: 1.5rem;
-}
-
 .retro-planet {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.75rem;
+  padding: 0.5rem 0.75rem;
   background: hsl(var(--cosmic-purple) / 0.2);
   border: 1px solid hsl(var(--cosmic-purple) / 0.3);
   border-radius: 0.5rem;
   margin-bottom: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.retro-planet:hover {
+  background: hsl(var(--cosmic-purple) / 0.3);
 }
 
 .retro-planet-info {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.5rem;
 }
 
 .retro-planet-emoji {
-  font-size: 1.5rem;
+  font-size: 1.25rem;
 }
 
 .retro-planet-name {
   font-family: 'Cinzel', serif;
   font-weight: 500;
-}
-
-.retro-planet-label {
-  font-size: 0.75rem;
-  color: hsl(var(--muted-foreground));
+  font-size: 0.95rem;
 }
 
 .retro-planet-dates {
-  font-size: 0.875rem;
+  font-size: 0.8rem;
   color: hsl(var(--cosmic-purple));
 }
 
 .no-retro {
   color: hsl(var(--muted-foreground));
+  font-size: 0.9rem;
+}
+
+.direct-planet {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0.75rem;
+  background: hsl(120, 50%, 40% / 0.1);
+  border: 1px solid hsl(120, 50%, 40% / 0.3);
+  border-radius: 0.5rem;
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+}
+
+.direct-planet-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.direct-planet-status {
+  font-size: 0.8rem;
+  color: hsl(120, 50%, 60%);
 }
 
 /* Summary Card */
 .summary-card {
-  margin-top: 1.5rem;
+  margin-top: 1rem;
 }
 
 .summary-title {
   font-family: 'Cinzel', serif;
-  font-size: 1.25rem;
+  font-size: 1.125rem;
   font-weight: 600;
   background: linear-gradient(135deg, hsl(var(--moon-silver)), hsl(var(--star-gold)));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
 }
 
 .summary-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
-}
-
-@media (min-width: 768px) {
-  .summary-grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
 }
 
 .summary-item {
   text-align: center;
-  padding: 1rem;
+  padding: 0.75rem;
   background: hsl(var(--muted) / 0.3);
   border-radius: 0.5rem;
 }
 
 .summary-emoji {
-  font-size: 2rem;
+  font-size: 1.75rem;
   display: block;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.25rem;
 }
 
 .summary-label {
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   color: hsl(var(--muted-foreground));
 }
 
@@ -592,32 +649,38 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 2rem;
-  margin-bottom: 2rem;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
 }
 
 .month-title {
   font-family: 'Cinzel', serif;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-weight: 600;
   background: linear-gradient(135deg, hsl(var(--moon-silver)), hsl(var(--star-gold)));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  min-width: 200px;
+  min-width: 180px;
   text-align: center;
+}
+
+.calendar-container {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .calendar-grid {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 0.5rem;
+  grid-template-columns: repeat(7, minmax(40px, 1fr));
+  gap: 4px;
+  min-width: 300px;
 }
 
 .weekday {
   text-align: center;
-  padding: 0.75rem;
-  font-size: 0.875rem;
+  padding: 0.5rem;
+  font-size: 0.75rem;
   color: hsl(var(--muted-foreground));
   font-weight: 500;
 }
@@ -634,29 +697,21 @@ body {
   justify-content: center;
   background: hsl(var(--card));
   border: 1px solid hsl(var(--border));
-  border-radius: 0.5rem;
+  border-radius: 0.375rem;
   cursor: pointer;
   transition: all 0.2s;
-  padding: 0.25rem;
+  padding: 2px;
+  min-height: 50px;
 }
 
 .calendar-day:hover {
   background: hsl(var(--muted));
-  transform: scale(1.05);
+  transform: scale(1.02);
 }
 
 .calendar-day.today {
   border-color: hsl(var(--accent));
-  box-shadow: 0 0 10px hsl(var(--accent) / 0.3);
-}
-
-.calendar-day.selected {
-  background: hsl(var(--accent) / 0.2);
-  border-color: hsl(var(--accent));
-}
-
-.calendar-day.other-month {
-  opacity: 0.3;
+  box-shadow: 0 0 8px hsl(var(--accent) / 0.3);
 }
 
 .calendar-day.voc-day {
@@ -664,26 +719,26 @@ body {
 }
 
 .day-number {
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   font-weight: 500;
 }
 
 .day-phase {
-  font-size: 1.25rem;
-  margin-top: 0.25rem;
+  font-size: 1rem;
+  margin-top: 2px;
 }
 
 /* Footer */
 .footer {
-  margin-top: 4rem;
+  margin-top: 2rem;
   text-align: center;
   color: hsl(var(--muted-foreground));
-  font-size: 0.875rem;
+  font-size: 0.8rem;
 }
 
 .footer-sub {
-  margin-top: 0.5rem;
-  font-size: 0.75rem;
+  margin-top: 0.25rem;
+  font-size: 0.7rem;
 }
 
 /* Dialog */
@@ -702,18 +757,22 @@ body {
   background: linear-gradient(135deg, hsl(var(--card)) 0%, hsl(222, 47%, 12%) 100%);
   border: 1px solid hsl(var(--border));
   border-radius: 1rem;
-  padding: 2rem;
+  padding: 1.5rem;
   max-width: 500px;
   width: 100%;
-  max-height: 90vh;
+  max-height: 85vh;
   overflow-y: auto;
   position: relative;
 }
 
+.day-dialog-large {
+  max-width: 600px;
+}
+
 .dialog-close {
   position: absolute;
-  top: 1rem;
-  right: 1rem;
+  top: 0.75rem;
+  right: 0.75rem;
   background: transparent;
   border: none;
   color: hsl(var(--muted-foreground));
@@ -729,31 +788,31 @@ body {
 
 .dialog-title {
   font-family: 'Cinzel', serif;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-weight: 600;
   background: linear-gradient(135deg, hsl(var(--moon-silver)), hsl(var(--star-gold)));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
   padding-right: 2rem;
 }
 
 .dialog-content {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.75rem;
 }
 
 .dialog-section {
-  padding: 1rem;
+  padding: 0.75rem;
   background: hsl(var(--muted) / 0.3);
   border-radius: 0.5rem;
 }
 
 .dialog-section h4 {
   font-family: 'Cinzel', serif;
-  font-size: 0.875rem;
+  font-size: 0.8rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: hsl(var(--muted-foreground));
@@ -763,6 +822,7 @@ body {
 .dialog-section p {
   color: hsl(var(--foreground));
   line-height: 1.6;
+  font-size: 0.9rem;
 }
 
 .dialog-section.good {
@@ -786,28 +846,59 @@ body {
 .day-dialog-info {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.75rem;
+  gap: 0.5rem;
+  padding: 0.5rem;
   background: hsl(var(--muted) / 0.3);
   border-radius: 0.5rem;
   margin-bottom: 0.5rem;
 }
 
 .day-dialog-info span:first-child {
-  font-size: 1.5rem;
+  font-size: 1.25rem;
 }
 
 /* Responsive */
 @media (max-width: 480px) {
   .title {
-    font-size: 2.5rem;
+    font-size: 2rem;
   }
   
   .phase-emoji {
-    font-size: 6rem;
+    font-size: 5rem;
   }
   
   .phase-name {
-    font-size: 1.75rem;
+    font-size: 1.5rem;
+  }
+  
+  .calendar-day {
+    min-height: 45px;
+  }
+  
+  .day-number {
+    font-size: 0.65rem;
+  }
+  
+  .day-phase {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .calendar-grid {
+    gap: 2px;
+  }
+  
+  .calendar-day {
+    min-height: 40px;
+    padding: 1px;
+  }
+  
+  .day-number {
+    font-size: 0.6rem;
+  }
+  
+  .day-phase {
+    font-size: 0.8rem;
   }
 }
