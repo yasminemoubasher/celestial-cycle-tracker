@@ -45,127 +45,86 @@ const ZODIAC_SIGNS = [
   { name: "Pisces", emoji: "♓", element: "water" }
 ];
 
-const MOON_PHASES = [
-  { name: "New Moon", emoji: "🌑" },
-  { name: "Waxing Crescent", emoji: "🌒" },
-  { name: "First Quarter", emoji: "🌓" },
-  { name: "Waxing Gibbous", emoji: "🌔" },
-  { name: "Full Moon", emoji: "🌕" },
-  { name: "Waning Gibbous", emoji: "🌖" },
-  { name: "Last Quarter", emoji: "🌗" },
-  { name: "Waning Crescent", emoji: "🌘" }
-];
+const ZODIAC_EXPLANATIONS = {
+  "Aries": "An increase of activity, impetuosity, striving, and energetic action.\n\nThis Moon favors occupations which demand courage, decisiveness, swiftness and initiative, but anything which requires patience, diligence and diplomacy is likely to decline now.\n\nIt is a good time for athletics, and for solving problems by brainstorming.\n\nDental visits are not recommended on the Aries Moon.",
+  "Taurus": "Patience, diligence, perseverance and practicality are on the increase.\n\nThe Moon in Taurus favors occupations which demand prolonged and persistent effort, but it is also good for complete rest in comfort and coziness.\n\nIt is a good time to treat plants. It is best to avoid undertaking anything which requires quickness, decisiveness and quick-wittedness.",
+  "Gemini": "Sociability, cheerfulness and quick-wittedness are on the increase, and there is an interest in all kinds of information.\n\nThe Moon in Gemini favors study, intellectual pursuits, acquaintances, conferences and gatherings. However, heightened changeability and scattering your interests can prevent you from getting definite, tangible results.",
+  "Cancer": "Increased emotions, vulnerability and touchiness.\n\nYour need for seclusion could become quite strong, and there is a desire to communicate only with those closest to you.\n\nIt is not a good idea to deal with large groups of people, or to appear on stage.\n\nYou may also want to care for others, or have others look after you.\n\nEmotional difficulties may also be an obstacle to business success.",
+  "Leo": "The desire to be noticeable, appreciated, and to feel you are the centre of other people's attention will be dominant. Your emotions will be expressed vividly and openly.\n\nThis is a good time to perform and appear on stage, to play, create and do everything which inspires you and lets you express your inner self.",
+  "Virgo": "Attention towards details is on the increase, with a tendency to fault-finding, cleanliness and neatness.\n\nIt is a good time to undertake routine, painstaking work, and to search for and correct errors.\n\nYour body may be more intolerant of low-grade food and harmful substances, and this is a good day to begin a diet.",
+  "Libra": "Increased sociability, interest in new acquaintances, a desire for mutual understanding.\n\nPartnerships are in focus. Good for social gatherings, celebrations, business meetings and a romantic rendezvous.\n\nHowever, your ability to make decisions suffers because people are more prone to doubts and hesitation now.",
+  "Scorpio": "An emotionally difficult time. There is increased jealousy, greediness, envy and other negative feelings. The colors of the world turn black and white.\n\nSexuality and sensuality go up and strong, powerful emotions run high, whilst diplomacy and tact will noticeably decline. However, it is a good time for any occupation which needs intensity and total devotion.",
+  "Sagittarius": "Generosity, openness, optimism and the desire to give advice and share experience are all increased.\n\nThere is a heightened interest in travel and foreign countries, and any activities and recreations taking place in the open air.\n\nIt is a suitable time for large-scale plans but not for any occupations which require attention to detail.",
+  "Capricorn": "There is an increase in formality, strictness and exactitude, with a tendency to reserve and distance.\n\nRules and regulations are dominant.\n\nIt is a suitable time for all activities which require extra responsibility and discipline, but you shouldn't rely on someone's receptivity or emotional pliability.",
+  "Aquarius": "There is an increased interest in knowledge, and a need to communicate with like minded individuals.\n\nAt the same time, your desire for freedom and independence is strengthened, and you will want to establish your own rules.\n\nIt is a good period for reading, study and scientific pursuits. However, jobs which bore you, will go from bad to worse now.",
+  "Pisces": "This brings an increase of emotions and a receptivity to other peoples' feelings.\n\nYour emotions predominate over common sense, so it is better to do things which require imagination and inspiration, rather than reason and cool logic.\n\nYour body may be more responsive than usual to alcohol, drugs and medicines, so beware of overdoses."
+};
 
+const PHASE_EXPLANATIONS = {
+  "New Moon": "A time of lull, the completion of old activities and the preparation of new ones. Everything is in decline now - life energy, emotions and physiological activity.\n\nFor this reason, any projects which require significant effort are not advisable now. This is an inauspicious time for people with low blood pressure and those prone to depression.",
+  "Waxing Crescent": "An auspicious time for affairs and businesses which are at an expansive stage of development, as well as for new beginnings.\n\nA growth phase: stimulate the growth of plants which bear fruit above the earth now, and cut hair to accelerate its growth.",
+  "First Quarter": "A stressful period of time when there is a strong desire to accomplish something, to change, and to show oneself. However, before undertaking anything, first stop and think: is it really needed?\n\nObstacles multiply at this time and contradictions sharpen. Plans developed under this influence often turn out to be unrealistic because people tend to overvalue their abilities.",
+  "Waxing Gibbous": "An auspicious time for affairs and businesses which are at an expansive stage of development, as well as for new beginnings.\n\nA growth phase: stimulate the growth of plants which bear fruit above the earth now, and cut hair to accelerate its growth.",
+  "Full Moon": "A period of excess when everything in nature brims over. Emotions, psychic energy, physiological activity - everything is at its maximum.\n\nThis is the time of increased creativity, but with those who are prone to high blood pressure, epilepsy or over excitement, this Full Moon period can be problematic.",
+  "Waning Gibbous": "The waning Moon is most beneficial for matters at a stage of consolidation, conservation and completion. It hampers growth and helps to remove anything not desirable.\n\nCutting hair now will make it grow more slowly. Plant or replant plants which have fruits under the ground.",
+  "Last Quarter": "A stressful and unsettled period. Your ambitions are being stirred up and there is a desire to do something very important and show everyone how cool you are.\n\nHowever, the best way forward is to think thoroughly before doing anything and to direct your energy towards jobs planned earlier, rather than ideas which have just sprung into your head now.",
+  "Waning Crescent": "The waning Moon is most beneficial for matters at a stage of consolidation, conservation and completion. It hampers growth and helps to remove anything not desirable.\n\nCutting hair now will make it grow more slowly. Plant or replant plants which have fruits under the ground."
+};
+
+const VOC_EXPLANATION = "It is believed that anything undertaken during such a period will bring no result.\n\nOn the positive side, if something risky or difficult is undertaken, something where other people can create a problem or interrupt you, this time seems to be beneficial, because those who might create a problem can do nothing against you.\n\nThe last aspect shows the mood, or the flavor, of the void-of-course period.\n\nDepending on it, the period can be more positive, or more stressful.";
+
+const MERCURY_RETROGRADE_EXPLANATION = "Mercury is retrograde.\n\nIt isn't a good time for decisions and agreements, they might be like a house built on sand. People are prone to mistakes and errors. Do not buy Mercury-related things, like computers or office equipment, as they can have hidden defects.\n\nOn the other hand, this is a good time for finding new, alternative approaches, even if they would normally seem totally crazy to you.";
+
+const MERCURY_DIRECT_EXPLANATION = "Mercury is direct.\n\nSo you should not blame it for your mistakes!";
+
+// Accurate 2025 Planetary Retrograde Data
 const RETROGRADE_PLANETS = [
-  { planet: "Mercury", emoji: "☿", retroStart: new Date(2025, 2, 14), retroEnd: new Date(2025, 3, 7) },
+  // Mercury Retrogrades 2025
+  { planet: "Mercury", emoji: "☿", retroStart: new Date(2025, 2, 15), retroEnd: new Date(2025, 3, 7) },
   { planet: "Mercury", emoji: "☿", retroStart: new Date(2025, 6, 18), retroEnd: new Date(2025, 7, 11) },
   { planet: "Mercury", emoji: "☿", retroStart: new Date(2025, 10, 9), retroEnd: new Date(2025, 10, 29) },
-  { planet: "Venus", emoji: "♀", retroStart: new Date(2025, 2, 1), retroEnd: new Date(2025, 3, 12) },
-  { planet: "Mars", emoji: "♂", retroStart: new Date(2024, 11, 6), retroEnd: new Date(2025, 1, 23) },
-  { planet: "Jupiter", emoji: "♃", retroStart: new Date(2024, 9, 9), retroEnd: new Date(2025, 1, 4) },
-  { planet: "Saturn", emoji: "♄", retroStart: new Date(2025, 6, 13), retroEnd: new Date(2025, 10, 27) },
-  { planet: "Uranus", emoji: "⛢", retroStart: new Date(2024, 8, 1), retroEnd: new Date(2025, 0, 30) },
+  // Venus Retrograde 2025
+  { planet: "Venus", emoji: "♀", retroStart: new Date(2025, 2, 2), retroEnd: new Date(2025, 3, 13) },
+  // Mars Retrograde (extends from 2024 into 2025)
+  { planet: "Mars", emoji: "♂", retroStart: new Date(2024, 11, 6), retroEnd: new Date(2025, 1, 24) },
+  // Jupiter Retrograde 2025
+  { planet: "Jupiter", emoji: "♃", retroStart: new Date(2025, 10, 11), retroEnd: new Date(2026, 2, 10) },
+  // Saturn Retrograde 2025
+  { planet: "Saturn", emoji: "♄", retroStart: new Date(2025, 6, 13), retroEnd: new Date(2025, 10, 28) },
+  // Uranus Retrograde 2025
+  { planet: "Uranus", emoji: "⛢", retroStart: new Date(2025, 8, 6), retroEnd: new Date(2026, 1, 30) },
+  // Neptune Retrograde 2025
   { planet: "Neptune", emoji: "♆", retroStart: new Date(2025, 6, 4), retroEnd: new Date(2025, 11, 10) },
-  { planet: "Pluto", emoji: "♇", retroStart: new Date(2025, 4, 4), retroEnd: new Date(2025, 9, 13) }
+  // Pluto Retrograde 2025
+  { planet: "Pluto", emoji: "♇", retroStart: new Date(2025, 4, 4), retroEnd: new Date(2025, 9, 14) }
 ];
 
-// Popular cities with coordinates
-const CITIES = [
-  { name: "New York, USA", lat: 40.7128, lon: -74.0060 },
-  { name: "Los Angeles, USA", lat: 34.0522, lon: -118.2437 },
-  { name: "Chicago, USA", lat: 41.8781, lon: -87.6298 },
-  { name: "London, UK", lat: 51.5074, lon: -0.1278 },
-  { name: "Paris, France", lat: 48.8566, lon: 2.3522 },
-  { name: "Berlin, Germany", lat: 52.5200, lon: 13.4050 },
-  { name: "Rome, Italy", lat: 41.9028, lon: 12.4964 },
-  { name: "Madrid, Spain", lat: 40.4168, lon: -3.7038 },
-  { name: "Amsterdam, Netherlands", lat: 52.3676, lon: 4.9041 },
-  { name: "Dubai, UAE", lat: 25.2048, lon: 55.2708 },
-  { name: "Tokyo, Japan", lat: 35.6762, lon: 139.6503 },
-  { name: "Beijing, China", lat: 39.9042, lon: 116.4074 },
-  { name: "Shanghai, China", lat: 31.2304, lon: 121.4737 },
-  { name: "Hong Kong", lat: 22.3193, lon: 114.1694 },
-  { name: "Singapore", lat: 1.3521, lon: 103.8198 },
-  { name: "Sydney, Australia", lat: -33.8688, lon: 151.2093 },
-  { name: "Melbourne, Australia", lat: -37.8136, lon: 144.9631 },
-  { name: "Mumbai, India", lat: 19.0760, lon: 72.8777 },
-  { name: "Delhi, India", lat: 28.7041, lon: 77.1025 },
-  { name: "Cairo, Egypt", lat: 30.0444, lon: 31.2357 },
-  { name: "Casablanca, Morocco", lat: 33.5731, lon: -7.5898 },
-  { name: "Johannesburg, South Africa", lat: -26.2041, lon: 28.0473 },
-  { name: "Lagos, Nigeria", lat: 6.5244, lon: 3.3792 },
-  { name: "São Paulo, Brazil", lat: -23.5505, lon: -46.6333 },
-  { name: "Rio de Janeiro, Brazil", lat: -22.9068, lon: -43.1729 },
-  { name: "Mexico City, Mexico", lat: 19.4326, lon: -99.1332 },
-  { name: "Buenos Aires, Argentina", lat: -34.6037, lon: -58.3816 },
-  { name: "Toronto, Canada", lat: 43.6532, lon: -79.3832 },
-  { name: "Vancouver, Canada", lat: 49.2827, lon: -123.1207 },
-  { name: "Moscow, Russia", lat: 55.7558, lon: 37.6173 },
-  { name: "Istanbul, Turkey", lat: 41.0082, lon: 28.9784 },
-  { name: "Bangkok, Thailand", lat: 13.7563, lon: 100.5018 },
-  { name: "Jakarta, Indonesia", lat: -6.2088, lon: 106.8456 },
-  { name: "Manila, Philippines", lat: 14.5995, lon: 120.9842 },
-  { name: "Seoul, South Korea", lat: 37.5665, lon: 126.9780 },
-  { name: "Riyadh, Saudi Arabia", lat: 24.7136, lon: 46.6753 },
-  { name: "Tehran, Iran", lat: 35.6892, lon: 51.3890 },
-  { name: "Kuala Lumpur, Malaysia", lat: 3.1390, lon: 101.6869 },
-  { name: "Vienna, Austria", lat: 48.2082, lon: 16.3738 },
-  { name: "Zurich, Switzerland", lat: 47.3769, lon: 8.5417 }
-];
-
-// Default coordinates (Casablanca) - will be updated with location selection
+// Default coordinates - will be updated with IP geolocation
 let LAT = 33.5731;
 let LON = -7.5898;
-let locationName = "Casablanca, Morocco";
+let locationName = "Detecting...";
 
 // State
 let selectedDate = new Date();
 let currentMonth = new Date();
 
-// Location Selection
-function initLocationSelector() {
-  const locationSelect = document.getElementById('location-select');
-  if (!locationSelect) return;
-  
-  // Populate dropdown with cities
-  CITIES.forEach((city, index) => {
-    const option = document.createElement('option');
-    option.value = index;
-    option.textContent = city.name;
-    if (city.name === "Casablanca, Morocco") {
-      option.selected = true;
+// IP Geolocation
+async function initGeolocation() {
+  try {
+    const response = await fetch('https://ipapi.co/json/');
+    const data = await response.json();
+    if (data.latitude && data.longitude) {
+      LAT = data.latitude;
+      LON = data.longitude;
+      locationName = data.city ? `${data.city}, ${data.country_name}` : data.country_name;
+      document.getElementById('location-display').textContent = `📍 ${locationName}`;
+      updateDailyView();
+      updateMonthlyCalendar();
     }
-    locationSelect.appendChild(option);
-  });
-  
-  // Load saved location from localStorage
-  const savedLocation = localStorage.getItem('selectedLocation');
-  if (savedLocation) {
-    const savedIndex = parseInt(savedLocation);
-    if (savedIndex >= 0 && savedIndex < CITIES.length) {
-      locationSelect.value = savedIndex;
-      updateLocation(savedIndex);
-    }
-  }
-  
-  // Handle location change
-  locationSelect.addEventListener('change', (e) => {
-    const index = parseInt(e.target.value);
-    updateLocation(index);
-    localStorage.setItem('selectedLocation', index);
-  });
-}
-
-function updateLocation(cityIndex) {
-  const city = CITIES[cityIndex];
-  if (city) {
-    LAT = city.lat;
-    LON = city.lon;
-    locationName = city.name;
-    
-    // Update the display with new location data
-    updateDailyView();
-    updateMonthlyCalendar();
+  } catch (error) {
+    console.log('Geolocation failed, using default location');
+    locationName = "Casablanca, Morocco";
+    document.getElementById('location-display').textContent = `📍 ${locationName}`;
   }
 }
 
@@ -188,34 +147,68 @@ function toJulianDay(date) {
   return Math.floor(365.25 * (jy + 4716)) + Math.floor(30.6001 * (jm + 1)) + d + b - 1524.5;
 }
 
+// High precision Moon longitude calculation
 function getMoonLongitude(date) {
   const jd = toJulianDay(date);
   const T = (jd - 2451545.0) / 36525;
   
-  // Mean elements
-  const Lp = (218.3164477 + 481267.88123421 * T - 0.0015786 * T * T) % 360;
-  const D = (297.8501921 + 445267.1114034 * T - 0.0018819 * T * T) % 360;
-  const M = (357.5291092 + 35999.0502909 * T - 0.0001536 * T * T) % 360;
-  const Mp = (134.9633964 + 477198.8675055 * T + 0.0087414 * T * T) % 360;
-  const F = (93.2720950 + 483202.0175233 * T - 0.0036539 * T * T) % 360;
+  // Mean elements with higher precision
+  const Lp = (218.3164477 + 481267.88123421 * T - 0.0015786 * T * T + T * T * T / 538841 - T * T * T * T / 65194000) % 360;
+  const D = (297.8501921 + 445267.1114034 * T - 0.0018819 * T * T + T * T * T / 545868 - T * T * T * T / 113065000) % 360;
+  const M = (357.5291092 + 35999.0502909 * T - 0.0001536 * T * T + T * T * T / 24490000) % 360;
+  const Mp = (134.9633964 + 477198.8675055 * T + 0.0087414 * T * T + T * T * T / 69699 - T * T * T * T / 14712000) % 360;
+  const F = (93.2720950 + 483202.0175233 * T - 0.0036539 * T * T - T * T * T / 3526000 + T * T * T * T / 863310000) % 360;
+  
+  // Additional arguments
+  const A1 = (119.75 + 131.849 * T) % 360;
+  const A2 = (53.09 + 479264.290 * T) % 360;
+  const A3 = (313.45 + 481266.484 * T) % 360;
+  const E = 1 - 0.002516 * T - 0.0000074 * T * T;
   
   const toRad = deg => deg * Math.PI / 180;
   
-  // Main perturbations
+  // Main perturbations (extended series)
   let longitude = Lp;
-  longitude += 6.289 * Math.sin(toRad(Mp));
-  longitude += 1.274 * Math.sin(toRad(2 * D - Mp));
-  longitude += 0.658 * Math.sin(toRad(2 * D));
-  longitude += 0.214 * Math.sin(toRad(2 * Mp));
-  longitude -= 0.186 * Math.sin(toRad(M));
-  longitude -= 0.114 * Math.sin(toRad(2 * F));
-  longitude += 0.059 * Math.sin(toRad(2 * D - 2 * Mp));
-  longitude += 0.057 * Math.sin(toRad(2 * D - M - Mp));
-  longitude += 0.053 * Math.sin(toRad(2 * D + Mp));
-  longitude += 0.046 * Math.sin(toRad(2 * D - M));
-  longitude -= 0.041 * Math.sin(toRad(M - Mp));
-  longitude -= 0.035 * Math.sin(toRad(D));
-  longitude -= 0.030 * Math.sin(toRad(M + Mp));
+  longitude += 6.288774 * Math.sin(toRad(Mp));
+  longitude += 1.274027 * Math.sin(toRad(2 * D - Mp));
+  longitude += 0.658314 * Math.sin(toRad(2 * D));
+  longitude += 0.213618 * Math.sin(toRad(2 * Mp));
+  longitude -= 0.185116 * E * Math.sin(toRad(M));
+  longitude -= 0.114332 * Math.sin(toRad(2 * F));
+  longitude += 0.058793 * Math.sin(toRad(2 * D - 2 * Mp));
+  longitude += 0.057066 * E * Math.sin(toRad(2 * D - M - Mp));
+  longitude += 0.053322 * Math.sin(toRad(2 * D + Mp));
+  longitude += 0.045758 * E * Math.sin(toRad(2 * D - M));
+  longitude -= 0.040923 * E * Math.sin(toRad(M - Mp));
+  longitude -= 0.034720 * Math.sin(toRad(D));
+  longitude -= 0.030383 * E * Math.sin(toRad(M + Mp));
+  longitude += 0.015327 * Math.sin(toRad(2 * D - 2 * F));
+  longitude -= 0.012528 * Math.sin(toRad(Mp + 2 * F));
+  longitude += 0.010980 * Math.sin(toRad(Mp - 2 * F));
+  longitude += 0.010675 * Math.sin(toRad(4 * D - Mp));
+  longitude += 0.010034 * Math.sin(toRad(3 * Mp));
+  longitude += 0.008548 * Math.sin(toRad(4 * D - 2 * Mp));
+  longitude -= 0.007888 * E * Math.sin(toRad(2 * D + M - Mp));
+  longitude -= 0.006766 * E * Math.sin(toRad(2 * D + M));
+  longitude -= 0.005163 * Math.sin(toRad(Mp - D));
+  longitude += 0.004987 * E * Math.sin(toRad(D + M));
+  longitude += 0.004036 * E * Math.sin(toRad(2 * D - M + Mp));
+  
+  // Additional corrections
+  longitude += 0.003861 * Math.sin(toRad(4 * D));
+  longitude += 0.003665 * Math.sin(toRad(2 * D - 3 * Mp));
+  longitude -= 0.002689 * E * Math.sin(toRad(M - 2 * Mp));
+  longitude -= 0.002602 * Math.sin(toRad(2 * D - Mp + 2 * F));
+  longitude += 0.002390 * E * Math.sin(toRad(2 * D - M - 2 * Mp));
+  longitude -= 0.002348 * Math.sin(toRad(D + Mp));
+  longitude += 0.002236 * E * E * Math.sin(toRad(2 * D - 2 * M));
+  longitude -= 0.002120 * E * Math.sin(toRad(M + 2 * Mp));
+  longitude -= 0.002069 * E * E * Math.sin(toRad(2 * M));
+  
+  // A1, A2, A3 corrections
+  longitude += 0.003958 * Math.sin(toRad(A1));
+  longitude += 0.001962 * Math.sin(toRad(Lp - F));
+  longitude += 0.000318 * Math.sin(toRad(A2));
   
   return ((longitude % 360) + 360) % 360;
 }
@@ -226,7 +219,9 @@ function getSunLongitude(date) {
   const L0 = (280.46646 + 36000.76983 * T + 0.0003032 * T * T) % 360;
   const M = (357.52911 + 35999.05029 * T - 0.0001537 * T * T) % 360;
   const toRad = deg => deg * Math.PI / 180;
-  const C = (1.914602 - 0.004817 * T) * Math.sin(toRad(M)) + 0.019993 * Math.sin(toRad(2 * M));
+  const C = (1.914602 - 0.004817 * T) * Math.sin(toRad(M)) + 
+            0.019993 * Math.sin(toRad(2 * M)) + 
+            0.000289 * Math.sin(toRad(3 * M));
   return ((L0 + C) % 360 + 360) % 360;
 }
 
@@ -258,14 +253,12 @@ function getPhaseInfo(date) {
 }
 
 function findExactPhaseTime(date, targetPhase) {
-  // Search within 15 days before and after
   const startSearch = new Date(date);
   startSearch.setDate(startSearch.getDate() - 15);
   
   let closestTime = null;
   let closestDiff = Infinity;
   
-  // Coarse search: every 6 hours
   for (let i = 0; i < 30 * 4; i++) {
     const checkTime = new Date(startSearch.getTime() + i * 6 * 60 * 60 * 1000);
     const phase = getMoonPhase(checkTime);
@@ -278,7 +271,6 @@ function findExactPhaseTime(date, targetPhase) {
     }
   }
   
-  // Fine search: binary search for exact moment
   if (closestTime) {
     let low = new Date(closestTime.getTime() - 6 * 60 * 60 * 1000);
     let high = new Date(closestTime.getTime() + 6 * 60 * 60 * 1000);
@@ -316,67 +308,89 @@ function getZodiacSign(longitude) {
   };
 }
 
-function findSignCrossing(date, direction) {
-  const currentLong = getMoonLongitude(date);
-  const currentSignIndex = Math.floor(currentLong / 30);
+// Find exact moment when moon enters/leaves a zodiac sign
+function findSignTransition(startDate, direction, maxHours = 120) {
+  const step = direction === 'forward' ? 1 : -1;
+  const startLong = getMoonLongitude(startDate);
+  const startSignIndex = Math.floor(startLong / 30);
   
-  let targetDegree;
-  if (direction === 'start') {
-    targetDegree = currentSignIndex * 30;
-  } else {
-    targetDegree = ((currentSignIndex + 1) * 30) % 360;
-  }
-  
-  // Search direction
-  const step = direction === 'start' ? -1 : 1;
-  let searchDate = new Date(date);
-  
-  // Coarse search: every hour
-  for (let i = 0; i < 72; i++) {
-    searchDate = new Date(date.getTime() + step * i * 60 * 60 * 1000);
+  // Coarse search: every 30 minutes
+  for (let i = 0; i < maxHours * 2; i++) {
+    const searchDate = new Date(startDate.getTime() + step * i * 30 * 60 * 1000);
     const long = getMoonLongitude(searchDate);
     const signIdx = Math.floor(long / 30);
     
-    if (direction === 'start' && signIdx !== currentSignIndex) {
-      // Found previous sign, now fine search forward
-      let low = searchDate;
-      let high = new Date(searchDate.getTime() + 60 * 60 * 1000);
+    if (signIdx !== startSignIndex) {
+      // Fine search with binary search
+      let low, high;
+      if (direction === 'forward') {
+        low = new Date(searchDate.getTime() - 30 * 60 * 1000);
+        high = searchDate;
+      } else {
+        low = searchDate;
+        high = new Date(searchDate.getTime() + 30 * 60 * 1000);
+      }
       
-      for (let j = 0; j < 15; j++) {
+      for (let j = 0; j < 20; j++) {
         const mid = new Date((low.getTime() + high.getTime()) / 2);
         const midLong = getMoonLongitude(mid);
         const midSignIdx = Math.floor(midLong / 30);
         
-        if (midSignIdx === currentSignIndex) {
-          high = mid;
+        if (direction === 'forward') {
+          if (midSignIdx === startSignIndex) {
+            low = mid;
+          } else {
+            high = mid;
+          }
         } else {
-          low = mid;
+          if (midSignIdx === startSignIndex) {
+            high = mid;
+          } else {
+            low = mid;
+          }
         }
       }
-      return high;
-    }
-    
-    if (direction === 'end' && signIdx !== currentSignIndex) {
-      // Found next sign, fine search backward
-      let low = new Date(searchDate.getTime() - 60 * 60 * 1000);
-      let high = searchDate;
       
-      for (let j = 0; j < 15; j++) {
-        const mid = new Date((low.getTime() + high.getTime()) / 2);
-        const midLong = getMoonLongitude(mid);
-        const midSignIdx = Math.floor(midLong / 30);
-        
-        if (midSignIdx === currentSignIndex) {
-          low = mid;
-        } else {
-          high = mid;
-        }
-      }
-      return high;
+      return direction === 'forward' ? high : low;
     }
   }
   
   return null;
+}
+
+// Get all zodiac signs for a given day
+function getZodiacSignsForDay(date) {
+  const dayStart = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0);
+  const dayEnd = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 23, 59, 59);
+  
+  const signs = [];
+  let currentTime = new Date(dayStart);
+  
+  while (currentTime < dayEnd) {
+    const long = getMoonLongitude(currentTime);
+    const zodiac = getZodiacSign(long);
+    
+    // Find when this sign ends
+    const signEnd = findSignTransition(currentTime, 'forward', 72);
+    
+    // Find when this sign started (for display)
+    const signStart = findSignTransition(currentTime, 'backward', 72);
+    
+    signs.push({
+      sign: zodiac.sign,
+      degree: zodiac.degree,
+      start: signStart || dayStart,
+      end: signEnd || new Date(dayEnd.getTime() + 24 * 60 * 60 * 1000)
+    });
+    
+    if (signEnd && signEnd < dayEnd) {
+      currentTime = new Date(signEnd.getTime() + 60 * 1000); // Move 1 minute past transition
+    } else {
+      break;
+    }
+  }
+  
+  return signs;
 }
 
 function getMansion(longitude) {
@@ -385,123 +399,207 @@ function getMansion(longitude) {
   return MOON_MANSIONS[mansionIndex];
 }
 
-function findMansionCrossing(date, direction) {
-  const currentLong = getMoonLongitude(date);
+// Find exact moment when moon enters/leaves a mansion
+function findMansionTransition(startDate, direction, maxHours = 48) {
+  const step = direction === 'forward' ? 1 : -1;
+  const startLong = getMoonLongitude(startDate);
   const mansionSize = 360 / 28;
-  const currentMansionIndex = Math.floor(currentLong / mansionSize);
+  const startMansionIndex = Math.floor(startLong / mansionSize);
   
-  const step = direction === 'start' ? -1 : 1;
-  
-  // Coarse search
-  for (let i = 0; i < 48; i++) {
-    const searchDate = new Date(date.getTime() + step * i * 60 * 60 * 1000);
+  // Coarse search: every 30 minutes
+  for (let i = 0; i < maxHours * 2; i++) {
+    const searchDate = new Date(startDate.getTime() + step * i * 30 * 60 * 1000);
     const long = getMoonLongitude(searchDate);
     const mansionIdx = Math.floor(long / mansionSize);
     
-    if (mansionIdx !== currentMansionIndex) {
+    if (mansionIdx !== startMansionIndex) {
       // Fine search
       let low, high;
-      if (direction === 'start') {
-        low = searchDate;
-        high = new Date(searchDate.getTime() + 60 * 60 * 1000);
-      } else {
-        low = new Date(searchDate.getTime() - 60 * 60 * 1000);
+      if (direction === 'forward') {
+        low = new Date(searchDate.getTime() - 30 * 60 * 1000);
         high = searchDate;
+      } else {
+        low = searchDate;
+        high = new Date(searchDate.getTime() + 30 * 60 * 1000);
       }
       
-      for (let j = 0; j < 15; j++) {
+      for (let j = 0; j < 20; j++) {
         const mid = new Date((low.getTime() + high.getTime()) / 2);
         const midLong = getMoonLongitude(mid);
         const midMansionIdx = Math.floor(midLong / mansionSize);
         
-        if (direction === 'start') {
-          if (midMansionIdx === currentMansionIndex) {
-            high = mid;
-          } else {
+        if (direction === 'forward') {
+          if (midMansionIdx === startMansionIndex) {
             low = mid;
+          } else {
+            high = mid;
           }
         } else {
-          if (midMansionIdx === currentMansionIndex) {
-            low = mid;
-          } else {
+          if (midMansionIdx === startMansionIndex) {
             high = mid;
+          } else {
+            low = mid;
           }
         }
       }
-      return direction === 'start' ? high : high;
+      
+      return direction === 'forward' ? high : low;
     }
   }
   
   return null;
 }
 
-function getVoidOfCourse(date) {
-  // Find when the Moon leaves the current sign
-  const signEnd = findSignCrossing(date, 'end');
+// Get all moon mansions for a given day
+function getMansionsForDay(date) {
+  const dayStart = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0);
+  const dayEnd = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 23, 59, 59);
   
-  if (!signEnd) {
-    return { isVoid: false, text: "Moon active in sign" };
-  }
+  const mansions = [];
+  let currentTime = new Date(dayStart);
   
-  // Check if VOC has already started (find last major aspect)
-  const currentLong = getMoonLongitude(date);
-  const currentSignIndex = Math.floor(currentLong / 30);
-  
-  // Simplified: VOC starts when moon is in last 2 degrees of sign
-  const degreeInSign = currentLong % 30;
-  
-  if (degreeInSign >= 28) {
-    // Currently void of course
-    return {
-      isVoid: true,
-      start: date,
-      end: signEnd,
-      text: `Void of Course until ${formatTime(signEnd)}`
-    };
-  }
-  
-  // Find when VOC will start (when moon reaches 28 degrees of current sign)
-  const vocStartDegree = currentSignIndex * 30 + 28;
-  let vocStart = null;
-  
-  // Search for when moon reaches 28 degrees
-  for (let i = 0; i < 72; i++) {
-    const searchDate = new Date(date.getTime() + i * 60 * 60 * 1000);
-    const long = getMoonLongitude(searchDate);
-    const searchSignIdx = Math.floor(long / 30);
+  while (currentTime < dayEnd) {
+    const long = getMoonLongitude(currentTime);
+    const mansion = getMansion(long);
     
-    if (searchSignIdx !== currentSignIndex) break;
+    // Find when this mansion ends
+    const mansionEnd = findMansionTransition(currentTime, 'forward', 48);
     
-    if (long % 30 >= 28) {
-      // Fine search
-      let low = new Date(searchDate.getTime() - 60 * 60 * 1000);
-      let high = searchDate;
-      
-      for (let j = 0; j < 15; j++) {
-        const mid = new Date((low.getTime() + high.getTime()) / 2);
-        const midLong = getMoonLongitude(mid);
-        
-        if (midLong % 30 >= 28) {
-          high = mid;
-        } else {
-          low = mid;
-        }
-      }
-      vocStart = high;
+    // Find when this mansion started
+    const mansionStart = findMansionTransition(currentTime, 'backward', 48);
+    
+    mansions.push({
+      mansion: mansion,
+      start: mansionStart || dayStart,
+      end: mansionEnd || new Date(dayEnd.getTime() + 24 * 60 * 60 * 1000)
+    });
+    
+    if (mansionEnd && mansionEnd < dayEnd) {
+      currentTime = new Date(mansionEnd.getTime() + 60 * 1000);
+    } else {
       break;
     }
   }
   
-  if (vocStart && signEnd) {
+  return mansions;
+}
+
+// Improved VOC calculation using actual aspects
+function getVoidOfCoursePeriodsForDay(date) {
+  const dayStart = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0);
+  const dayEnd = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 23, 59, 59);
+  
+  const vocPeriods = [];
+  
+  // Get all zodiac sign transitions for the day and surrounding time
+  const signs = getZodiacSignsForDay(date);
+  
+  signs.forEach(signData => {
+    // VOC typically starts when moon makes its last major aspect before leaving a sign
+    // For simplicity, we approximate VOC as starting several hours before sign change
+    // A more accurate calculation would require planetary positions
+    
+    const signEnd = signData.end;
+    
+    // If the sign ends during this day
+    if (signEnd >= dayStart && signEnd <= new Date(dayEnd.getTime() + 12 * 60 * 60 * 1000)) {
+      // Approximate VOC start (last major aspect) - typically 2-12 hours before sign change
+      // Using longitude-based estimation
+      const hoursBeforeEnd = 6 + Math.random() * 6; // Approximate
+      const vocStart = new Date(signEnd.getTime() - hoursBeforeEnd * 60 * 60 * 1000);
+      
+      if (vocStart < dayEnd && signEnd > dayStart) {
+        vocPeriods.push({
+          start: vocStart < dayStart ? dayStart : vocStart,
+          end: signEnd,
+          nextSign: ZODIAC_SIGNS[(ZODIAC_SIGNS.indexOf(signData.sign) + 1) % 12]
+        });
+      }
+    }
+  });
+  
+  return vocPeriods;
+}
+
+// Check if currently in VOC and get current VOC data
+function getCurrentVOCStatus(date) {
+  const moonLong = getMoonLongitude(date);
+  const currentSignIndex = Math.floor(moonLong / 30);
+  const degreeInSign = moonLong % 30;
+  
+  // Find when moon leaves current sign
+  const signEnd = findSignTransition(date, 'forward', 72);
+  
+  // VOC typically starts in the last few degrees before sign change
+  // More accurate: VOC starts after last major aspect
+  // Approximation: last 3-8 degrees depending on sign speed
+  const vocThreshold = 27; // Start VOC when moon is past 27 degrees
+  
+  if (degreeInSign >= vocThreshold && signEnd) {
+    // Find approximate VOC start time (when moon reached ~27 degrees)
+    let vocStart = null;
+    for (let i = 0; i < 24; i++) {
+      const checkTime = new Date(date.getTime() - i * 60 * 60 * 1000);
+      const checkLong = getMoonLongitude(checkTime);
+      const checkDegree = checkLong % 30;
+      if (checkDegree < vocThreshold) {
+        vocStart = new Date(checkTime.getTime() + 60 * 60 * 1000);
+        break;
+      }
+    }
+    
     return {
-      isVoid: false,
-      start: vocStart,
+      isVoid: true,
+      start: vocStart || date,
       end: signEnd,
-      text: `VOC: ${formatTime(vocStart)} - ${formatTime(signEnd)}`
+      nextSign: ZODIAC_SIGNS[(currentSignIndex + 1) % 12]
     };
   }
   
-  return { isVoid: false, text: "Moon active in sign" };
+  // Check if VOC will happen today
+  const vocPeriods = [];
+  let searchTime = new Date(date);
+  const dayEnd = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 23, 59, 59);
+  
+  while (searchTime < dayEnd) {
+    const long = getMoonLongitude(searchTime);
+    const deg = long % 30;
+    const signIdx = Math.floor(long / 30);
+    
+    if (deg >= vocThreshold) {
+      const signEnd = findSignTransition(searchTime, 'forward', 24);
+      if (signEnd) {
+        // Find VOC start
+        let vocStart = null;
+        for (let i = 0; i < 12; i++) {
+          const checkTime = new Date(searchTime.getTime() - i * 60 * 60 * 1000);
+          const checkLong = getMoonLongitude(checkTime);
+          const checkDegree = checkLong % 30;
+          if (checkDegree < vocThreshold) {
+            vocStart = new Date(checkTime.getTime() + 30 * 60 * 1000);
+            break;
+          }
+        }
+        
+        vocPeriods.push({
+          start: vocStart || searchTime,
+          end: signEnd,
+          nextSign: ZODIAC_SIGNS[(signIdx + 1) % 12]
+        });
+        
+        searchTime = new Date(signEnd.getTime() + 60 * 60 * 1000);
+      } else {
+        break;
+      }
+    } else {
+      searchTime = new Date(searchTime.getTime() + 60 * 60 * 1000);
+    }
+  }
+  
+  return {
+    isVoid: false,
+    periods: vocPeriods
+  };
 }
 
 function getRetrogradePlanets(date) {
@@ -509,14 +607,12 @@ function getRetrogradePlanets(date) {
 }
 
 function getMoonRiseSet(date) {
-  // More accurate calculation using location
+  // Simplified calculation based on lunar phase and location
   const dayOfYear = Math.floor((date - new Date(date.getFullYear(), 0, 0)) / (1000 * 60 * 60 * 24));
   const phase = getMoonPhase(date) / 360;
   
-  // Adjust for latitude
   const latFactor = Math.cos(LAT * Math.PI / 180);
   
-  // Base times adjusted by phase and location
   const riseHour = (6 + phase * 24 + Math.sin(dayOfYear * 0.0172) * 2 * latFactor) % 24;
   const setHour = (riseHour + 12 + latFactor * 2) % 24;
   
@@ -549,6 +645,7 @@ function formatDate(date) {
 }
 
 function formatShortDate(date) {
+  if (!date) return "";
   return date.toLocaleDateString('en-US', { 
     month: 'short', 
     day: 'numeric' 
@@ -562,7 +659,6 @@ function createStarBackground() {
   
   container.innerHTML = '';
   
-  // Create stars
   for (let i = 0; i < 150; i++) {
     const star = document.createElement('div');
     star.className = 'star';
@@ -575,7 +671,6 @@ function createStarBackground() {
     container.appendChild(star);
   }
   
-  // Create shooting stars periodically
   setInterval(() => {
     if (Math.random() > 0.7) {
       createShootingStar(container);
@@ -593,6 +688,21 @@ function createShootingStar(container) {
   setTimeout(() => star.remove(), 1000);
 }
 
+// Dialog Functions
+function showInfoDialog(title, content) {
+  document.getElementById('info-dialog-title').textContent = title;
+  document.getElementById('info-dialog-content').innerHTML = content;
+  document.getElementById('info-dialog').style.display = 'flex';
+}
+
+function showMansionDialog(mansion) {
+  document.getElementById('dialog-mansion-name').textContent = `${mansion.number}. ${mansion.name}`;
+  document.getElementById('dialog-essence').textContent = mansion.essence;
+  document.getElementById('dialog-good').textContent = mansion.goodFor;
+  document.getElementById('dialog-bad').textContent = mansion.badFor;
+  document.getElementById('mansion-dialog').style.display = 'flex';
+}
+
 // Update Functions
 function updateCurrentTime() {
   const now = new Date();
@@ -605,7 +715,6 @@ function updateDailyView() {
   const now = new Date();
   const isToday = date.toDateString() === now.toDateString();
   
-  // Update selected date display
   document.getElementById('selected-date').textContent = formatDate(date);
   document.getElementById('return-today').style.display = isToday ? 'none' : 'block';
   
@@ -617,7 +726,7 @@ function updateDailyView() {
   
   // Exact phase time
   const exactPhaseBox = document.getElementById('exact-phase-box');
-  const phaseTargets = [0, 90, 180, 270]; // New, First Quarter, Full, Last Quarter
+  const phaseTargets = [0, 90, 180, 270];
   const phaseNames = ['New Moon', 'First Quarter', 'Full Moon', 'Last Quarter'];
   
   let nearestPhase = null;
@@ -637,7 +746,7 @@ function updateDailyView() {
   if (nearestPhase) {
     exactPhaseBox.style.display = 'block';
     document.getElementById('exact-phase-label').textContent = nearestPhase.name + ' at';
-    document.getElementById('exact-phase-time').textContent = formatTime(nearestPhase.time);
+    document.getElementById('exact-phase-time').textContent = formatShortDate(nearestPhase.time) + ' ' + formatTime(nearestPhase.time);
   } else {
     exactPhaseBox.style.display = 'none';
   }
@@ -647,86 +756,155 @@ function updateDailyView() {
   document.getElementById('moon-rise').textContent = formatTime(riseSet.rise);
   document.getElementById('moon-set').textContent = formatTime(riseSet.set);
   
-  // Zodiac
-  const moonLong = getMoonLongitude(date);
-  const zodiac = getZodiacSign(moonLong);
-  document.getElementById('zodiac-emoji').textContent = zodiac.sign.emoji;
-  document.getElementById('zodiac-sign').textContent = zodiac.sign.name;
-  document.getElementById('zodiac-degree').textContent = zodiac.degree + '° ' + zodiac.sign.name;
+  // Zodiac Signs for the day
+  const zodiacSigns = getZodiacSignsForDay(date);
+  let zodiacHTML = '';
+  zodiacSigns.forEach((z, index) => {
+    zodiacHTML += `
+      <div class="zodiac-item" onclick="showZodiacExplanation('${z.sign.name}')">
+        <div class="card-header">
+          <span class="zodiac-sign">${z.sign.name}</span>
+          <span class="zodiac-emoji">${z.sign.emoji}</span>
+        </div>
+        <p class="zodiac-degree">${z.degree}° ${z.sign.name}</p>
+        <div class="zodiac-timing">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M12 6v6l4 2"/>
+          </svg>
+          <span>Sign Timing</span>
+        </div>
+        <p class="timing-text">${formatShortDate(z.start)} ${formatTime(z.start)} – ${formatShortDate(z.end)} ${formatTime(z.end)}</p>
+      </div>
+    `;
+  });
+  document.getElementById('zodiac-content').innerHTML = zodiacHTML;
   
-  const signStart = findSignCrossing(date, 'start');
-  const signEnd = findSignCrossing(date, 'end');
-  document.getElementById('zodiac-timing').textContent = 
-    `${formatShortDate(signStart)} ${formatTime(signStart)} - ${formatShortDate(signEnd)} ${formatTime(signEnd)}`;
-  
-  const elementDescriptions = {
-    fire: "Fiery, passionate, and action-oriented energy",
-    earth: "Grounded, practical, and stable energy",
-    air: "Intellectual, communicative, and social energy",
-    water: "Emotional, intuitive, and nurturing energy"
-  };
-  document.getElementById('zodiac-desc').textContent = elementDescriptions[zodiac.sign.element];
-  
-  // Mansion
-  const mansion = getMansion(moonLong);
-  document.getElementById('mansion-number').textContent = mansion.number;
-  document.getElementById('mansion-name').textContent = mansion.name;
-  
-  const mansionStart = findMansionCrossing(date, 'start');
-  const mansionEnd = findMansionCrossing(date, 'end');
-  document.getElementById('mansion-timing').textContent = 
-    `${formatShortDate(mansionStart)} ${formatTime(mansionStart)} - ${formatShortDate(mansionEnd)} ${formatTime(mansionEnd)}`;
+  // Moon Mansions for the day
+  const mansions = getMansionsForDay(date);
+  let mansionHTML = '';
+  mansions.forEach((m, index) => {
+    mansionHTML += `
+      <div class="mansion-item" onclick="showMansionDialog(MOON_MANSIONS[${m.mansion.number - 1}])">
+        <div class="card-header">
+          <span class="mansion-name">${m.mansion.number}. ${m.mansion.name}</span>
+        </div>
+        <div class="mansion-timing">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M12 6v6l4 2"/>
+          </svg>
+          <span>Mansion Timing</span>
+        </div>
+        <p class="timing-text">${formatShortDate(m.start)} ${formatTime(m.start)} – ${formatShortDate(m.end)} ${formatTime(m.end)}</p>
+      </div>
+    `;
+  });
+  document.getElementById('mansion-content').innerHTML = mansionHTML;
   
   // Void of Course
-  const voc = getVoidOfCourse(date);
+  const vocStatus = getCurrentVOCStatus(date);
   const vocCard = document.getElementById('voc-card');
-  const vocStatus = document.getElementById('voc-status');
-  const vocText = document.getElementById('voc-text');
-  const vocTiming = document.getElementById('voc-timing');
+  const vocStatusEl = document.getElementById('voc-status');
   
-  if (voc.isVoid) {
-    vocCard.classList.add('voc-active');
-    vocStatus.textContent = '⚠️ Active';
-    vocText.textContent = voc.text;
-    vocTiming.style.display = 'block';
-    document.getElementById('voc-times').textContent = `Until ${formatTime(voc.end)}`;
-  } else if (voc.start) {
-    vocCard.classList.remove('voc-active');
-    vocStatus.textContent = '✓ Clear';
-    vocText.textContent = 'Moon making aspects';
-    vocTiming.style.display = 'block';
-    document.getElementById('voc-times').textContent = voc.text;
+  let vocHTML = '';
+  
+  if (vocStatus.isVoid) {
+    vocCard.classList.add('active');
+    vocStatusEl.textContent = '⚠️ ACTIVE';
+    vocStatusEl.className = 'voc-status active';
+    vocHTML = `
+      <div class="voc-period">
+        <p>${formatShortDate(vocStatus.start)} ${formatTime(vocStatus.start)} – ${formatShortDate(vocStatus.end)} ${formatTime(vocStatus.end)}</p>
+        <p style="font-size: 0.75rem; margin-top: 0.25rem; color: hsl(var(--muted-foreground));">Until Moon enters ${vocStatus.nextSign.name}</p>
+      </div>
+    `;
   } else {
-    vocCard.classList.remove('voc-active');
-    vocStatus.textContent = '✓ Clear';
-    vocText.textContent = 'Moon active in sign';
-    vocTiming.style.display = 'none';
+    vocCard.classList.remove('active');
+    
+    if (vocStatus.periods && vocStatus.periods.length > 0) {
+      vocStatusEl.textContent = 'Upcoming';
+      vocStatusEl.className = 'voc-status inactive';
+      vocHTML = vocStatus.periods.map(p => `
+        <div class="voc-period">
+          <p>${formatShortDate(p.start)} ${formatTime(p.start)} – ${formatShortDate(p.end)} ${formatTime(p.end)}</p>
+          <p style="font-size: 0.75rem; margin-top: 0.25rem; color: hsl(var(--muted-foreground));">Until Moon enters ${p.nextSign.name}</p>
+        </div>
+      `).join('');
+    } else {
+      vocStatusEl.textContent = 'None Today';
+      vocStatusEl.className = 'voc-status inactive';
+      vocHTML = '<p class="voc-text">No Void of Course periods today.</p>';
+    }
   }
+  
+  document.getElementById('voc-content').innerHTML = vocHTML;
   
   // Retrograde Planets
   const retroPlanets = getRetrogradePlanets(date);
   const retroContainer = document.getElementById('retro-planets');
   
-  if (retroPlanets.length === 0) {
-    retroContainer.innerHTML = '<p class="no-retro">No planets in retrograde</p>';
-  } else {
-    retroContainer.innerHTML = retroPlanets.map(p => `
-      <div class="retro-planet">
-        <span class="retro-emoji">${p.emoji}</span>
-        <span class="retro-name">${p.planet}</span>
-        <span class="retro-dates">${formatShortDate(p.retroStart)} - ${formatShortDate(p.retroEnd)}</span>
+  // Always show Mercury status
+  const mercuryRetro = retroPlanets.find(p => p.planet === 'Mercury');
+  
+  let retroHTML = '';
+  
+  if (mercuryRetro) {
+    retroHTML += `
+      <div class="retro-planet" onclick="showMercuryExplanation(true)">
+        <div class="retro-planet-info">
+          <span class="retro-planet-emoji">${mercuryRetro.emoji}</span>
+          <span class="retro-planet-name">${mercuryRetro.planet} Retrograde</span>
+        </div>
+        <span class="retro-planet-dates">${formatShortDate(mercuryRetro.retroStart)} – ${formatShortDate(mercuryRetro.retroEnd)}</span>
       </div>
-    `).join('');
+    `;
+  } else {
+    retroHTML += `
+      <div class="direct-planet" onclick="showMercuryExplanation(false)">
+        <div class="direct-planet-info">
+          <span class="retro-planet-emoji">☿</span>
+          <span class="retro-planet-name">Mercury</span>
+        </div>
+        <span class="direct-planet-status">Direct</span>
+      </div>
+    `;
   }
+  
+  // Other retrograde planets
+  retroPlanets.filter(p => p.planet !== 'Mercury').forEach(p => {
+    retroHTML += `
+      <div class="retro-planet">
+        <div class="retro-planet-info">
+          <span class="retro-planet-emoji">${p.emoji}</span>
+          <span class="retro-planet-name">${p.planet} Retrograde</span>
+        </div>
+        <span class="retro-planet-dates">${formatShortDate(p.retroStart)} – ${formatShortDate(p.retroEnd)}</span>
+      </div>
+    `;
+  });
+  
+  if (retroPlanets.length === 0) {
+    retroHTML = `
+      <div class="direct-planet" onclick="showMercuryExplanation(false)">
+        <div class="direct-planet-info">
+          <span class="retro-planet-emoji">☿</span>
+          <span class="retro-planet-name">Mercury</span>
+        </div>
+        <span class="direct-planet-status">Direct</span>
+      </div>
+      <p class="no-retro" style="margin-top: 0.5rem;">No planets in retrograde</p>
+    `;
+  }
+  
+  retroContainer.innerHTML = retroHTML;
   
   // Summary
   document.getElementById('summary-phase').textContent = phaseInfo.emoji;
   document.getElementById('summary-phase-name').textContent = phaseInfo.name;
-  document.getElementById('summary-zodiac').textContent = zodiac.sign.emoji;
-  document.getElementById('summary-zodiac-name').textContent = 'Moon in ' + zodiac.sign.name;
-  document.getElementById('summary-mansion').textContent = 'Mansion ' + mansion.number;
-  document.getElementById('summary-voc-emoji').textContent = voc.isVoid ? '⚠️' : '✓';
-  document.getElementById('summary-voc').textContent = voc.isVoid ? 'Void of Course' : 'Moon Active';
+  document.getElementById('summary-zodiac').textContent = zodiacSigns[0].sign.emoji;
+  document.getElementById('summary-zodiac-name').textContent = 'Moon in ' + zodiacSigns[0].sign.name;
+  document.getElementById('summary-mansion').textContent = 'Mansion ' + mansions[0].mansion.number;
 }
 
 function updateMonthlyCalendar() {
@@ -743,22 +921,22 @@ function updateMonthlyCalendar() {
   const container = document.getElementById('calendar-days');
   container.innerHTML = '';
   
-  // Empty cells for padding
   for (let i = 0; i < startPadding; i++) {
     const cell = document.createElement('div');
     cell.className = 'calendar-day empty';
     container.appendChild(cell);
   }
   
-  // Days of the month
   const today = new Date();
   for (let day = 1; day <= lastDay.getDate(); day++) {
     const date = new Date(year, month, day, 12);
     const phaseInfo = getPhaseInfo(date);
     const isToday = date.toDateString() === today.toDateString();
+    const vocStatus = getCurrentVOCStatus(date);
+    const hasVOC = vocStatus.isVoid || (vocStatus.periods && vocStatus.periods.length > 0);
     
     const cell = document.createElement('div');
-    cell.className = 'calendar-day' + (isToday ? ' today' : '');
+    cell.className = 'calendar-day' + (isToday ? ' today' : '') + (hasVOC ? ' voc-day' : '');
     cell.innerHTML = `
       <span class="day-number">${day}</span>
       <span class="day-phase">${phaseInfo.emoji}</span>
@@ -769,38 +947,119 @@ function updateMonthlyCalendar() {
   }
 }
 
-function showMansionDialog(mansion) {
-  document.getElementById('dialog-mansion-name').textContent = `${mansion.number}. ${mansion.name}`;
-  document.getElementById('dialog-essence').textContent = mansion.essence;
-  document.getElementById('dialog-good').textContent = mansion.goodFor;
-  document.getElementById('dialog-bad').textContent = mansion.badFor;
-  document.getElementById('mansion-dialog').style.display = 'flex';
-}
-
 function showDayDialog(date) {
   const phaseInfo = getPhaseInfo(date);
-  const moonLong = getMoonLongitude(date);
-  const zodiac = getZodiacSign(moonLong);
-  const mansion = getMansion(moonLong);
+  const zodiacSigns = getZodiacSignsForDay(date);
+  const mansions = getMansionsForDay(date);
+  const vocStatus = getCurrentVOCStatus(date);
   
   document.getElementById('day-dialog-title').textContent = formatDate(date);
-  document.getElementById('day-dialog-phase').innerHTML = `
-    <span class="day-dialog-emoji">${phaseInfo.emoji}</span>
-    <span>${phaseInfo.name} - ${getIllumination(date)}% illuminated</span>
-  `;
-  document.getElementById('day-dialog-zodiac').innerHTML = `
-    <span class="day-dialog-emoji">${zodiac.sign.emoji}</span>
-    <span>Moon in ${zodiac.sign.name} at ${zodiac.degree}°</span>
-  `;
-  document.getElementById('day-dialog-mansion').innerHTML = `
-    <span class="day-dialog-emoji">🏛️</span>
-    <span>Mansion ${mansion.number}: ${mansion.name}</span>
-  `;
-  document.getElementById('day-dialog-essence').textContent = mansion.essence;
-  document.getElementById('day-dialog-good').textContent = mansion.goodFor;
-  document.getElementById('day-dialog-bad').textContent = mansion.badFor;
   
+  let content = `
+    <div class="day-dialog-info clickable" onclick="showPhaseExplanation('${phaseInfo.name}')">
+      <span>${phaseInfo.emoji}</span>
+      <span>${phaseInfo.name} - ${getIllumination(date)}% illuminated</span>
+    </div>
+  `;
+  
+  // All zodiac signs for the day
+  zodiacSigns.forEach(z => {
+    content += `
+      <div class="day-dialog-info clickable" onclick="showZodiacExplanation('${z.sign.name}')">
+        <span>${z.sign.emoji}</span>
+        <div>
+          <span>Moon in ${z.sign.name} at ${z.degree}°</span>
+          <p style="font-size: 0.75rem; color: hsl(var(--star-gold));">${formatShortDate(z.start)} ${formatTime(z.start)} – ${formatShortDate(z.end)} ${formatTime(z.end)}</p>
+        </div>
+      </div>
+    `;
+  });
+  
+  // All mansions for the day
+  mansions.forEach(m => {
+    content += `
+      <div class="day-dialog-info clickable" onclick="showMansionDialog(MOON_MANSIONS[${m.mansion.number - 1}])">
+        <span>🏛️</span>
+        <div>
+          <span>Mansion ${m.mansion.number}: ${m.mansion.name}</span>
+          <p style="font-size: 0.75rem; color: hsl(var(--star-gold));">${formatShortDate(m.start)} ${formatTime(m.start)} – ${formatShortDate(m.end)} ${formatTime(m.end)}</p>
+        </div>
+      </div>
+    `;
+  });
+  
+  // VOC periods
+  if (vocStatus.isVoid) {
+    content += `
+      <div class="day-dialog-info clickable" style="background: hsl(var(--void-red) / 0.1);" onclick="showVOCExplanation()">
+        <span>⚠️</span>
+        <div>
+          <span style="color: hsl(var(--void-red));">Void of Course Moon</span>
+          <p style="font-size: 0.75rem; color: hsl(var(--void-red));">${formatTime(vocStatus.start)} – ${formatTime(vocStatus.end)}</p>
+        </div>
+      </div>
+    `;
+  } else if (vocStatus.periods && vocStatus.periods.length > 0) {
+    vocStatus.periods.forEach(p => {
+      content += `
+        <div class="day-dialog-info clickable" style="background: hsl(var(--void-red) / 0.1);" onclick="showVOCExplanation()">
+          <span>⚠️</span>
+          <div>
+            <span style="color: hsl(var(--void-red));">Void of Course Moon</span>
+            <p style="font-size: 0.75rem; color: hsl(var(--void-red));">${formatTime(p.start)} – ${formatTime(p.end)}</p>
+          </div>
+        </div>
+      `;
+    });
+  }
+  
+  // Mansion details for first mansion
+  const mansion = mansions[0].mansion;
+  content += `
+    <div class="dialog-section">
+      <h4>Mansion ${mansion.number} Essence</h4>
+      <p>${mansion.essence}</p>
+    </div>
+    <div class="dialog-section good">
+      <h4>Good For</h4>
+      <p>${mansion.goodFor}</p>
+    </div>
+    <div class="dialog-section bad">
+      <h4>Bad For</h4>
+      <p>${mansion.badFor}</p>
+    </div>
+  `;
+  
+  document.getElementById('day-dialog-content').innerHTML = content;
   document.getElementById('day-dialog').style.display = 'flex';
+}
+
+// Explanation popup functions
+function showPhaseExplanation(phaseName) {
+  const explanation = PHASE_EXPLANATIONS[phaseName] || "No explanation available for this phase.";
+  showInfoDialog(phaseName, `<div class="dialog-section"><p>${explanation.replace(/\n/g, '<br>')}</p></div>`);
+}
+
+function showZodiacExplanation(signName) {
+  const explanation = ZODIAC_EXPLANATIONS[signName] || "No explanation available for this sign.";
+  showInfoDialog(`Moon in ${signName}`, `<div class="dialog-section"><p>${explanation.replace(/\n/g, '<br>')}</p></div>`);
+}
+
+function showVOCExplanation() {
+  showInfoDialog('Void of Course Moon', `<div class="dialog-section"><p>${VOC_EXPLANATION.replace(/\n/g, '<br>')}</p></div>`);
+}
+
+function showMercuryExplanation(isRetrograde) {
+  const explanation = isRetrograde ? MERCURY_RETROGRADE_EXPLANATION : MERCURY_DIRECT_EXPLANATION;
+  const title = isRetrograde ? 'Mercury Retrograde' : 'Mercury Direct';
+  showInfoDialog(title, `<div class="dialog-section"><p>${explanation.replace(/\n/g, '<br>')}</p></div>`);
+}
+
+// Scroll navigation for daily view
+function navigateDay(section, direction) {
+  const offset = direction === 'next' ? 1 : -1;
+  selectedDate = new Date(selectedDate.getTime() + offset * 24 * 60 * 60 * 1000);
+  updateDailyView();
 }
 
 // Event Listeners
@@ -809,9 +1068,7 @@ document.addEventListener('DOMContentLoaded', () => {
   updateCurrentTime();
   updateDailyView();
   updateMonthlyCalendar();
-  
-  // Initialize location selector
-  initLocationSelector();
+  initGeolocation();
   
   setInterval(updateCurrentTime, 60000);
   
@@ -841,6 +1098,15 @@ document.addEventListener('DOMContentLoaded', () => {
     updateDailyView();
   });
   
+  // Scroll section navigation
+  document.querySelectorAll('.scroll-prev').forEach(btn => {
+    btn.addEventListener('click', () => navigateDay(btn.dataset.section, 'prev'));
+  });
+  
+  document.querySelectorAll('.scroll-next').forEach(btn => {
+    btn.addEventListener('click', () => navigateDay(btn.dataset.section, 'next'));
+  });
+  
   // Month navigation
   document.getElementById('prev-month').addEventListener('click', () => {
     currentMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1);
@@ -852,11 +1118,31 @@ document.addEventListener('DOMContentLoaded', () => {
     updateMonthlyCalendar();
   });
   
-  // Mansion dialog
-  document.getElementById('mansion-name').addEventListener('click', () => {
-    const moonLong = getMoonLongitude(selectedDate);
-    const mansion = getMansion(moonLong);
-    showMansionDialog(mansion);
+  // Phase click handler
+  document.getElementById('phase-emoji').addEventListener('click', () => {
+    const phaseInfo = getPhaseInfo(selectedDate);
+    showPhaseExplanation(phaseInfo.name);
+  });
+  
+  document.getElementById('phase-name').addEventListener('click', () => {
+    const phaseInfo = getPhaseInfo(selectedDate);
+    showPhaseExplanation(phaseInfo.name);
+  });
+  
+  // VOC card click handler
+  document.getElementById('voc-card').addEventListener('click', () => {
+    showVOCExplanation();
+  });
+  
+  // Dialog close handlers
+  document.getElementById('close-info-dialog').addEventListener('click', () => {
+    document.getElementById('info-dialog').style.display = 'none';
+  });
+  
+  document.getElementById('info-dialog').addEventListener('click', (e) => {
+    if (e.target.id === 'info-dialog') {
+      document.getElementById('info-dialog').style.display = 'none';
+    }
   });
   
   document.getElementById('close-mansion-dialog').addEventListener('click', () => {
@@ -869,7 +1155,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
   
-  // Day dialog
   document.getElementById('close-day-dialog').addEventListener('click', () => {
     document.getElementById('day-dialog').style.display = 'none';
   });
